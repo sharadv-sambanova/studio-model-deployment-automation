@@ -24,34 +24,57 @@ MAX_SEQ_LEN_MAP = {
     131072: "128k"
 }
 
+def convert_seq_len(seq_len, target_type=str):
+    """Convert a seq_len value to target_type"""
+    supported_types = [int, str]
+    if target_type not in supported_types:
+        raise ValueError("Only 'str' and 'int' are supported for target_type")
+    if not any([isinstance(seq_len, x) for x in supported_types]):
+        raise ValueError("Only 'str' and 'int' are supported for seq_len")
+    
+    # No conversion needed
+    if isinstance(seq_len, target_type):
+        return seq_len
+    # Lookup in above map to convert str -> int
+    if isinstance(seq_len, int):
+        return MAX_SEQ_LEN_MAP[seq_len]
+    # Lookup in reverse of above map to convert int -> str
+    elif isinstance(seq_len, str):
+        reverse_map = {v:k for k,v in MAX_SEQ_LEN_MAP.items()}
+        return reverse_map[seq_len]
 
-class UnknownExpertError(Exception):
-    pass
 
 def lookup_seq_len(expert_name: str):
     """Lookup the seq len for an expert in the cloud helm chart"""
-    for model in CLOUD_MODELS:
-        if expert_name in model["aliases"]:
-            # CLOUD_MODELS format:
-            #   <model name>:
-                #   aliases:
-                #       - <expert_name>:
-                #   gatewayTokenizer:
-                #       backendModels:
-                #           - name: <expert_name>
-                #           - maxSequenceLength: <max_seq_len>
-            backend_model = [m for m in model["gatewayTokenizer"]["backendModels"] if m["name"] == expert_name][0]
-            return backend_model["maxSequenceLength"]
+    for model_name, model in CLOUD_MODELS.items():
+        try:
+            if model_name == expert_name or expert_name in model["aliases"]:
+                # CLOUD_MODELS format:
+                #   <model name>:
+                    #   aliases:
+                    #       - <expert_name>:
+                    #   gatewayTokenizer:
+                    #       backendModels:
+                    #           - name: <expert_name>
+                    #           - maxSequenceLength: <max_seq_len>
+                backend_model = [m for m in model["gatewayTokenizer"]["backendModels"] if m["name"] == expert_name][0]
+                return backend_model["maxSequenceLength"]
+        except KeyError as e:
+            return 4096
 
 
-# def get_expert_seq_len(expert_name: str):
-#     # match '-<digits>k' at the end of the expert name
-#     match = re.search(r'-(\d+)k$', expert_name)
-#     if match:
-#         # discard the '-'
-#         return match.group()[1:]
-#     # If no seq len specified in expert name, default to 4k
-#     return "4k"
+def get_expert_seq_len(expert_name: str):
+    # match '-<digits>k' at the end of the expert name
+    seq_len = None
+    match = re.search(r'-(\d+)k$', expert_name)
+    if match:
+        # discard the '-'
+        seq_len = match.group()[1:]
+    # If no seq len specified in expert name, lookup in values.yaml
+    else:
+        seq_len = lookup_seq_len(expert_name)
+    return convert_seq_len(seq_len, int)
+
 
 def get_pef_jira(pef_path: str):
     pef_path = pef_path.lower()
@@ -72,6 +95,11 @@ def normalize_expert_name(expert_name):
 
 
 def get_mapping(expert_name):
+    """Lookup the expert's normalized name in the MODEL_MAPPINGS_FILE"""
+
+    class UnknownExpertError(Exception):
+        pass
+
     expert_name_norm = normalize_expert_name(expert_name)
     expert_mapping = MODEL_MAPPINGS.get(expert_name_norm, None)
     if expert_mapping is None:
@@ -80,6 +108,7 @@ def get_mapping(expert_name):
 
 
 def get_app_name(expert_name):
+    """Get the app name from the expert's MODEL_MAPPINGS_FILE entry"""
     expert_mapping = get_mapping(expert_name)
     app_name = expert_mapping["app_name"]
     if app_name is None:
@@ -88,9 +117,10 @@ def get_app_name(expert_name):
 
 
 def get_parameter_count(expert_name):
+    """Get the model_parameter_count from the expert's MODEL_MAPPINGS_FILE entry"""
     expert_mapping = get_mapping(expert_name)
     return str(expert_mapping["model_parameter_count"])
 
 if __name__ == "__main__":
-    pef_path = 'gs://acp-coe-models-checkpoints-prod-0/version/deepseek-0.0.4/pefs-checkpoints/pefs/PEF_1663_multi_prefill/FP8_trial_Deepseek_V3_TP16_ss1024_16384_24576_32768__1024_4096_8192_12288_16384_token_gen_seq_length2_61_encs_flags__CoE_ckpt_sharing_BS1_SS1024_16384_24576_32768.pef'
-    get_pef_jira(pef_path)
+    print(get_expert_seq_len("DeepSeek-R1-32k"))
+    print(get_expert_seq_len("DeepSeek-V3-0324"))
