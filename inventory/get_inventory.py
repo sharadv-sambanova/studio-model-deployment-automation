@@ -58,8 +58,9 @@ def write_inventory(configs: dict[InventoryKey, CloudConfig]):
     with open(OUTPUT_FILE, "w") as f:
         writer = csv.DictWriter(f, fieldnames=CloudConfig.fieldnames)
         writer.writeheader()
-        for config in configs.values():
-            writer.writerow(config.to_row())
+        sorted_keys = sorted(configs.keys(), key=lambda x: str(x))
+        for key in sorted_keys:
+            writer.writerow(configs[key].to_row())
 
 
 if __name__ == "__main__":
