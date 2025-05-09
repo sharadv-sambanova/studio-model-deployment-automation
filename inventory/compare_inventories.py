@@ -1,9 +1,11 @@
 import csv
 import json
-STUDIO_INVENTORY_PATH="/Users/sharadv/code/daas-release/inventory/inventory_output/prod/models_and_pefs_gtm.csv"
-CLOUD_INVENTORY_PATH="/Users/sharadv/code/studio-model-deployment-automation/inventory/cloud_inventory.csv"
-CLOUD_ONLY="cloud_only_inventory.csv"
-COMMON="common_inventory.csv"
+from utils import STUDIO_INVENTORY_PATH
+
+CLOUD_INVENTORY_PATH="/Users/sharadv/code/studio-model-deployment-automation/inventory/output/cloud_inventory.csv"
+CLOUD_ONLY_OUTPUT="output/cloud_only_inventory.csv"
+STUDIO_ONLY_OUTPUT="output/studio_only_inventory.csv"
+COMMON_OUTPUT="output/common_inventory.csv"
 
 def get_inventories():
     """Parse the inventory files and return maps of key (tuple) -> row (dict)"""
@@ -79,7 +81,7 @@ def write_cloud_only(keys, cloud, studio):
                 sibling_studio_pefs.append(row["pef_path"])
                 studio_model = row["model_path"]
         return sibling_studio_pefs if sibling_studio_pefs else None, studio_model
-    with open(CLOUD_ONLY, "w") as f:
+    with open(CLOUD_ONLY_OUTPUT, "w") as f:
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
         for key in keys:
@@ -93,8 +95,24 @@ def write_cloud_only(keys, cloud, studio):
             writer.writerow(row)
 
 
+def write_studio_only(keys, studio):
+    fields = [
+        "model_app_name",
+        "param_count",
+        "max_seq_length",
+        "spec_decoding",
+        "batch_sizes",
+    ]
+    with open(STUDIO_ONLY_OUTPUT, "w") as f:
+        writer = csv.DictWriter(f, fieldnames=fields)
+        writer.writeheader()
+        for key in keys:
+            row = {}
+            for field in fields:
+                if field in studio[key]:
+                    row[field] = studio[key][field]
+            writer.writerow(row)
 
-# def write_studio_only():
 
 def write_common(keys, cloud, studio):
     fields = [
@@ -111,7 +129,7 @@ def write_common(keys, cloud, studio):
         "studio_pef",
         "studio_model",
     ]
-    with open("common_inventory_pov.csv", "w") as f:
+    with open(COMMON_OUTPUT, "w") as f:
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
         for key in keys:
@@ -146,6 +164,7 @@ if __name__ == "__main__":
     common, cloud_only, studio_only = compare_inventories(cloud_inventory, studio_inventory)
     write_common(common, cloud_inventory, studio_inventory)
     write_cloud_only(cloud_only, cloud_inventory, studio_inventory)
+    write_studio_only(studio_only, studio_inventory)
 
 
 

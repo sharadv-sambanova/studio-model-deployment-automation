@@ -2,32 +2,56 @@ import re
 import yaml
 from pathlib import Path
 
+DAAS_RELEASE_ROOT = Path("/Users/sharadv/code/daas-release/")
+FAST_COE_ROOT = Path("/Users/sharadv/code/fast-coe")
+
+STUDIO_INVENTORY_PATH= DAAS_RELEASE_ROOT / "inventory/inventory_output/prod/models_and_pefs_gtm.csv"
+CLOUD_MODELS_YAML = FAST_COE_ROOT / "helm/values.yaml"
+CLOUD_PROD_DEPLOYMENTS = FAST_COE_ROOT / "helm/inference-deployments/prod"
+
 MODEL_MAPPINGS_FILE = Path("/Users/sharadv/code/studio-model-deployment-automation/inventory/model_mappings.yaml")
-MODEL_MAPPINGS=""
-
-MAX_SEQ_LEN_MAP = {
-    "4k": 4096,
-    "8k": 8192,
-    "16k": 16384,
-    "32k": 32768,
-    "64k": 65536,
-    "128k": 131072
-}
-
 with open(MODEL_MAPPINGS_FILE) as f:
     MODEL_MAPPINGS=yaml.safe_load(f)
+with open(CLOUD_MODELS_YAML) as f:
+    CLOUD_MODELS = yaml.safe_load(f)["models"]
+
+MAX_SEQ_LEN_MAP = {
+    4096: "4k",
+    8192: "8k",
+    16384: "16k",
+    32768: "32k",
+    65536: "64k",
+    131072: "128k"
+}
+
 
 class UnknownExpertError(Exception):
     pass
 
-def get_expert_seq_len(expert_name: str):
-    # match '-<digits>k' at the end of the expert name
-    match = re.search(r'-(\d+)k$', expert_name)
-    if match:
-        # discard the '-'
-        return match.group()[1:]
-    # If no seq len specified in expert name, default to 4k
-    return "4k"
+def lookup_seq_len(expert_name: str):
+    """Lookup the seq len for an expert in the cloud helm chart"""
+    for model in CLOUD_MODELS:
+        if expert_name in model["aliases"]:
+            # CLOUD_MODELS format:
+            #   <model name>:
+                #   aliases:
+                #       - <expert_name>:
+                #   gatewayTokenizer:
+                #       backendModels:
+                #           - name: <expert_name>
+                #           - maxSequenceLength: <max_seq_len>
+            backend_model = [m for m in model["gatewayTokenizer"]["backendModels"] if m["name"] == expert_name][0]
+            return backend_model["maxSequenceLength"]
+
+
+# def get_expert_seq_len(expert_name: str):
+#     # match '-<digits>k' at the end of the expert name
+#     match = re.search(r'-(\d+)k$', expert_name)
+#     if match:
+#         # discard the '-'
+#         return match.group()[1:]
+#     # If no seq len specified in expert name, default to 4k
+#     return "4k"
 
 def get_pef_jira(pef_path: str):
     pef_path = pef_path.lower()

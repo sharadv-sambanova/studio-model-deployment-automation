@@ -118,7 +118,7 @@ E5-Mistral-7B-Instruct:
 
 QwQ-32B:
   app_name: Samba1 Qwen2.5 Experts
-  model_parameter_count: 32b
+  model_parameter_count: 32b-qwq
 
 Whisper-Large-v3:
   app_name: Whisper

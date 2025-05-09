@@ -1,12 +1,10 @@
 import yaml
-from pathlib import Path
 import os
 from schemas import InferenceDeployment, ModelConfig
 import csv
+from utils import CLOUD_PROD_DEPLOYMENTS
 
-FAST_COE_PATH = Path("/Users/sharadv/code/fast-coe")
-CLOUD_PROD_DEPLOYMENTS = FAST_COE_PATH / "helm/inference-deployments/prod"
-OUTPUT_FILE = "cloud_inventory.csv"
+OUTPUT_FILE = "output/cloud_inventory.csv"
 
 
 def load_deployments():

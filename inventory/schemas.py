@@ -1,7 +1,7 @@
 
 from pydantic import BaseModel, Field, PrivateAttr
 from typing import List, Dict, Optional
-from utils import get_expert_seq_len, get_app_name, get_parameter_count, normalize_expert_name, get_pef_jira, MAX_SEQ_LEN_MAP
+from utils import lookup_seq_len, get_app_name, get_parameter_count, normalize_expert_name, get_pef_jira, MAX_SEQ_LEN_MAP
 import json
 
 
@@ -96,8 +96,8 @@ class ModelConfig():
             "experts": sorted(list(self.experts)),
             "deployments": self.deployments,
             "param_count": self.model_parameter_count, 
-            "max_seq_len": MAX_SEQ_LEN_MAP[self.max_seq_len], 
-            "max_seq_len_cloud": self.max_seq_len, 
+            "max_seq_len": self.max_seq_len, 
+            "max_seq_len_cloud": MAX_SEQ_LEN_MAP[self.max_seq_len], 
             "spec_decoding": self.sd, 
             "batch_sizes": self.batch_sizes, 
             "cloud_pefs_json": get_formatted_pefs(),
@@ -177,7 +177,7 @@ class Spec(BaseModel):
                     sd = True
                     sd_draft_checkpoints = self._get_checkpoints_for_expert(sd_config.draft_model)
                     expert._draft_models.update(sd_draft_checkpoints)
-            max_seq_len = get_expert_seq_len(expert_name)
+            max_seq_len = lookup_seq_len(expert_name)
 
             for expert in experts:
                 expert._sd = sd
