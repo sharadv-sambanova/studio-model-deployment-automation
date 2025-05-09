@@ -1,8 +1,21 @@
 
 from pydantic import BaseModel, Field, PrivateAttr
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Union
 from utils import lookup_seq_len, get_app_name, get_parameter_count, normalize_expert_name, get_pef_jira, MAX_SEQ_LEN_MAP
-import json
+from dataclasses import dataclass, fields
+
+
+class NonUniquePEFsError(Exception):
+    pass
+
+class NonUniqueCheckpointError(Exception):
+    pass
+
+class InvalidDictForInventoryKey(Exception):
+    pass
+
+class InvalidObjectForInventoryKey(Exception):
+    pass
 
 
 class Metadata(BaseModel):
@@ -55,6 +68,7 @@ class SpeculativeDecodingConfig(BaseModel):
     k: int
     draft_model: str
     target_model: str
+
 
 
 class ModelConfig():
@@ -164,34 +178,47 @@ class Spec(BaseModel):
 
     # The model configs defined by this inference deployment spec
     # Private attribute, not used by pydantic
-    _model_configs: PrivateAttr(default_factory = dict)
+    _cloud_configs: PrivateAttr(default_factory = dict)
 
     def model_post_init(self, __context):
         if not hasattr(self, '_model_configs'):
             self._model_configs = {}
+            self._add_cloud_configs()
 
-        for expert_name, experts in self.experts.items():
-            sd = False
-            for sd_config in self.speculative_decoding:
-                if sd_config.target_model == expert_name:
-                    sd = True
-                    sd_draft_checkpoints = self._get_checkpoints_for_expert(sd_config.draft_model)
-                    expert._draft_models.update(sd_draft_checkpoints)
-            max_seq_len = lookup_seq_len(expert_name)
+    def _add_cloud_configs(self):
+        for expert_name, experts in self.experts:
+            new_config = CloudConfig(expert_name, experts, self)
+            self._cloud_configs[new_config.key] = new_config
 
-            for expert in experts:
-                expert._sd = sd
-                expert._max_seq_len = max_seq_len
-                self._process_expert_pefs(expert)
+    def set_deployment(self, deployment: str):
+        for _, cloud_config in self._cloud_configs.items():
+            cloud_config.deployments.add(deployment)
+    # def model_post_init(self, __context):
+    #     if not hasattr(self, '_model_configs'):
+    #         self._model_configs = {}
 
-                expert._pef_data = self.pefs[expert.pef]
-                expert._checkpoint_data = self.checkpoints[expert.checkpoint]
+    #     for expert_name, experts in self.experts.items():
+    #         sd = False
+    #         for sd_config in self.speculative_decoding:
+    #             if sd_config.target_model == expert_name:
+    #                 sd = True
+    #                 sd_draft_checkpoints = self._get_checkpoints_for_expert(sd_config.draft_model)
+    #                 expert._draft_models.update(sd_draft_checkpoints)
+    #         max_seq_len = lookup_seq_len(expert_name)
 
-                expert._app_name = get_app_name(expert_name)
-                expert._model_parameter_count = get_parameter_count(expert_name)
-                expert._is_processed = True
+    #         for expert in experts:
+    #             expert._sd = sd
+    #             expert._max_seq_len = max_seq_len
+    #             self._process_expert_pefs(expert)
 
-                self._add_model_config(expert, expert_name)
+    #             expert._pef_data = self.pefs[expert.pef]
+    #             expert._checkpoint_data = self.checkpoints[expert.checkpoint]
+
+    #             expert._app_name = get_app_name(expert_name)
+    #             expert._model_parameter_count = get_parameter_count(expert_name)
+    #             expert._is_processed = True
+
+    #             self._add_model_config(expert, expert_name)
 
     def set_deployment(self, deployment: str):
         for _, model_config in self._model_configs.items():
@@ -227,6 +254,149 @@ class Spec(BaseModel):
             config.add_expert(expert, expert_name)
         
         self._model_configs[key] = config
+
+@dataclass(frozen=True)
+class InventoryKey:
+    app_name: str
+    param_count: int
+    sd: float
+    max_seq_length: int
+
+    @classmethod
+    def from_input(cls, obj: Union[Dict, object]) -> "InventoryKey":
+        init_kwargs = {}
+        field_names = {f.name for f in fields(cls)}
+
+        if isinstance(obj, dict):
+            try:
+                for field_name in field_names:
+                    init_kwargs[field_name] = obj[field_name]
+            except KeyError:
+                raise InvalidDictForInventoryKey(
+                    f"Expected keys {field_names} in dict used for InventoryKey initialization, got {sorted(list(obj.keys()))}"
+                )
+        else:
+            try:
+                for field_name in field_names:
+                    init_kwargs[field_name] = getattr(obj, field_name)
+            except AttributeError:
+                raise InvalidObjectForInventoryKey(
+                    f"Expected attributes {field_names} in object used for InventoryKey initialization, got {sorted(list())}"
+                )
+
+        return cls(**init_kwargs)
+
+    def __str__(self):
+        s = "_".join(tuple(self)) # Concat fields together with "_"
+        s = s.replace(" ", "_") # App name has spaces
+        s = s.replace(".", "d") # App name might have "."
+        return s
+
+
+
+class PEF():
+
+    def __init__(self, expert: Expert, max_seq_length: int, pefdata: PEFData, is_sd: bool):
+        self.name: str = expert.pef
+        self.max_seq_length: int = max_seq_length
+        self.batch_size: int = expert.batch_size
+        self.path: str = pefdata.source
+        self.jira: str = get_pef_jira(self.path)
+        self.copy_pef: str = expert.copy_pef
+        self.sd: bool = is_sd
+
+    def __eq__(self, other_pef: "PEF"):
+        return self.path == other_pef.path
+
+    def __dict__(self):
+        return {
+            self.batch_size: 
+            {
+                "pef_path": self.path,
+                "copy_pef": self.copy_pef,
+                "jira": self.jira,
+            }
+        }
+
+    def __hash__(self):
+        return hash(self.path)
+
+
+class CloudConfig():
+    fieldnames = ["id", "model_app_name", "experts", "deployments", "param_count", "max_seq_length", "max_seq_len_cloud", "spec_decoding", "batch_sizes", "cloud_pefs_json"]
+
+    def __init__(self, name: str, experts: List[Expert], spec: Spec):
+        self.name: str = name
+        self.merged_configs = {normalize_expert_name(self.name)}
+        self.max_seq_length: int = lookup_seq_len(self.name)
+        self.param_count: str = get_parameter_count(self.name)
+        self.app_name: str = get_app_name(self.name)
+        self.deployments: str = set()
+        self.checkpoint = self.get_checkpoint_path(experts, spec)
+        self.is_sd_target, self.draft_experts = self.process_sd(spec)
+        self.pefs: Dict[str, PEF] = self.build_pefs(experts, spec)
+        self.key = InventoryKey.from_input(self)
+
+
+    @property
+    def batch_sizes(self):
+        return sorted(list({p.batch_size} for p in self.pefs.values()))
+
+
+    @property
+    def id(self):
+        return str(self.key)
+
+
+    def __str__(self):
+        return f"app_name: {self.app_name} | parameter_count: {self.param_count} | max_seq_len: {self.max_seq_length} | sd: {self.is_sd_target}"
+
+
+    def get_checkpoint_path(self, experts: List[Expert], spec: Spec):
+        """Return the GCS path of the checkpoint this expert references. Each expert should have 1 unique checkpoint path."""
+        unique_checkpoints = {e["checkpoint"] for e in experts}
+        if len(unique_checkpoints) != 1:
+            raise NonUniqueCheckpointError(f"Expert {self.name} in deployment {spec._deployment} does not have exactly 1 unique checkpoint")
+        return spec.checkpoints[unique_checkpoints.pop()].source
+
+
+    def process_sd(self, spec: Spec):
+        """Return whether this CloudConfig is a target model, and corresponding draft models if so"""
+        is_sd_target, draft_experts = False, set()
+        for sd_config in spec.speculative_decoding:
+            if sd_config.target_model == self.name:
+                is_sd_target = True
+                draft_experts.add(sd_config.draft_model)
+        
+        return is_sd_target, draft_experts
+
+
+    def build_pefs(self, experts: list[Expert], spec: Spec):
+        """Process the list of experts to create PEF objects for this CloudConfig"""
+        pefs = {}
+        for expert in experts:
+            if expert.pef in pefs:
+                raise NonUniquePEFsError(f"Expert {self.name} in deployment {spec._deployment} references pef {expert.pef} multiple times")
+            new_pef = PEF(expert,self.max_seq_length,spec.pefs[expert.pef], self.is_sd_target)
+            self.pefs.add(new_pef)
+        return pefs
+
+
+    def to_row(self):
+        """Return a dict representing this CloudConfig to be used for writing to a csv with DictWriter"""
+
+        return {
+            "id": self.id,
+            "model_app_name": self.app_name,
+            "experts": sorted(list(self.merged_configs)),
+            "deployments": self.deployments,
+            "param_count": self.param_count, 
+            "max_seq_length": self.max_seq_length, 
+            "max_seq_length_cloud": MAX_SEQ_LEN_MAP[self.max_seq_length], 
+            "spec_decoding": self.is_sd_target, 
+            "batch_sizes": self.batch_sizes, 
+            "cloud_pefs_json": {p.batch_size: dict(p) for p in sorted(list(self.pefs.values()), key = lambda x: x.batch_size)},
+        }
     
 
 class InferenceDeployment(BaseModel):
