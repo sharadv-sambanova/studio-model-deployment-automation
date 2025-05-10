@@ -1,6 +1,7 @@
 import re
 import yaml
 from pathlib import Path
+from typing import Union
 
 DAAS_RELEASE_ROOT = Path("/Users/sharadv/code/daas-release/")
 FAST_COE_ROOT = Path("/Users/sharadv/code/fast-coe")
@@ -24,7 +25,7 @@ MAX_SEQ_LEN_MAP = {
     131072: "128k"
 }
 
-def convert_seq_len(seq_len, target_type=str):
+def convert_seq_len(seq_len, target_type=str) -> Union[str, int]:
     """Convert a seq_len value to target_type"""
     supported_types = [int, str]
     if target_type not in supported_types:
@@ -44,7 +45,7 @@ def convert_seq_len(seq_len, target_type=str):
         return reverse_map[seq_len]
 
 
-def lookup_seq_len(expert_name: str):
+def lookup_seq_len(expert_name: str) -> int:
     """Lookup the seq len for an expert in the cloud helm chart"""
     for model_name, model in CLOUD_MODELS.items():
         try:
@@ -63,7 +64,8 @@ def lookup_seq_len(expert_name: str):
             return 4096
 
 
-def get_expert_seq_len(expert_name: str):
+def get_expert_seq_len(expert_name: str) -> int:
+    """Return the expert's sequence length as an int, based on the expert_name or helm/values.yaml"""
     # match '-<digits>k' at the end of the expert name
     seq_len = None
     match = re.search(r'-(\d+)k$', expert_name)
@@ -76,25 +78,27 @@ def get_expert_seq_len(expert_name: str):
     return convert_seq_len(seq_len, int)
 
 
-def get_pef_jira(pef_path: str):
+def get_pef_jira(pef_path: str) -> str:
+    """Extract the PEF Jira from the pef_path, or return None if no match was found"""
     pef_path = pef_path.lower()
     pat = r'(?i)pef[-_]+\d+'
-    match = re.search(pat, pef_path)
+    match = re.search(pat, pef_path) # e.g. pef__-1234
     if match is None:
         return None
-    jira = match.group().upper()
-    jira = jira.replace('-','').replace('_','')
-    jira = jira[:3] + "-" + jira[3:]
+    jira = match.group().upper() # e.g. PEF__-1234
+    jira = jira.replace('-','').replace('_','') # e.g. PEF1234
+    jira = jira[:3] + "-" + jira[3:] # e.g. PEF-1234
     return jira
 
-def normalize_expert_name(expert_name):
+def normalize_expert_name(expert_name) -> str:
+    """Remove the trailing sequence length marker from an expert name"""
     if re.search(r'-(\d+)k$', expert_name):
         return "-".join(expert_name.split("-")[:-1])
     else:
         return expert_name
 
 
-def get_mapping(expert_name):
+def get_mapping(expert_name) -> dict[str, str]:
     """Lookup the expert's normalized name in the MODEL_MAPPINGS_FILE"""
 
     class UnknownExpertError(Exception):
@@ -107,7 +111,7 @@ def get_mapping(expert_name):
     return expert_mapping
 
 
-def get_app_name(expert_name):
+def get_app_name(expert_name) -> str:
     """Get the app name from the expert's MODEL_MAPPINGS_FILE entry"""
     expert_mapping = get_mapping(expert_name)
     app_name = expert_mapping["app_name"]
@@ -116,11 +120,7 @@ def get_app_name(expert_name):
     return app_name
 
 
-def get_parameter_count(expert_name):
+def get_parameter_count(expert_name) -> str:
     """Get the model_parameter_count from the expert's MODEL_MAPPINGS_FILE entry"""
     expert_mapping = get_mapping(expert_name)
     return str(expert_mapping["model_parameter_count"])
-
-if __name__ == "__main__":
-    print(get_expert_seq_len("DeepSeek-R1-32k"))
-    print(get_expert_seq_len("DeepSeek-V3-0324"))
