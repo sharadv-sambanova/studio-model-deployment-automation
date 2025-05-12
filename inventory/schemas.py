@@ -90,6 +90,26 @@ class InventoryKey:
     sd: float
     max_seq_length: int
 
+    fields_aliases = {
+        "app_name": ["app_name", "model_app_name"],
+        "param_count": ["param_count", "model_parameter_count"],
+        "sd": ["sd", "spec_decoding", "speculative_decoding"],
+        "max_seq_length": ["max_seq_length", "max_seq_len"]
+    }
+
+    @classmethod
+    def lookup_field(cls, fieldname: str, obj):
+        if isinstance(obj, dict):
+            for alias in InventoryKey.fields_aliases[fieldname]:
+                if alias in obj:
+                    return obj[alias]
+            raise KeyError
+        else:
+            for alias in InventoryKey.fields_aliases[fieldname]:
+                if hasattr(obj, alias):
+                    return getattr(obj, alias)
+            raise AttributeError
+
     @classmethod
     def from_input(cls, obj: Union[Dict, object]) -> "InventoryKey":
         """
@@ -107,22 +127,17 @@ class InventoryKey:
         init_kwargs = {}
         field_names = {f.name for f in fields(cls)}
 
-        if isinstance(obj, dict):
-            try:
-                for field_name in field_names:
-                    init_kwargs[field_name] = obj[field_name]
-            except KeyError:
-                raise InvalidDictForInventoryKey(
-                    f"Expected keys {field_names} in dict used for InventoryKey initialization, got {sorted(list(obj.keys()))}"
-                )
-        else:
-            try:
-                for field_name in field_names:
-                    init_kwargs[field_name] = getattr(obj, field_name)
-            except AttributeError:
-                raise InvalidObjectForInventoryKey(
-                    f"Expected attributes {field_names} in object used for InventoryKey initialization, got {sorted(list(dir(obj)))}"
-                )
+        try:
+            for field_name in field_names:
+                init_kwargs[field_name] = InventoryKey.lookup_field(field_name, obj)
+        except KeyError:
+            raise InvalidDictForInventoryKey(
+                f"Expected keys {field_names} in dict used for InventoryKey initialization, got {sorted(list(obj.keys()))}"
+            )
+        except AttributeError:
+            raise InvalidObjectForInventoryKey(
+                f"Expected attributes {field_names} in object used for InventoryKey initialization, got {sorted(list(dir(obj)))}"
+            )
 
         return cls(**init_kwargs)
 
@@ -132,6 +147,13 @@ class InventoryKey:
         s = s.replace(" ", "_") # App name has spaces
         s = s.replace(".", "d") # App name might have "."
         return s
+
+
+    def is_sibling(self, other_key: "InventoryKey"):
+        """Check if this InventoryKey is a sibling of other_key. Sibling means Studio would load the artifacts for these keys together"""
+        return  self.app_name == other_key.app_name and \
+                self.param_count == other_key.param_count and  \
+                self.sd == other_key.sd
 
 
 class PEF():

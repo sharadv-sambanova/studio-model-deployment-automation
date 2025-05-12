@@ -1,20 +1,20 @@
 model_app_name,param_count,max_seq_length,spec_decoding,batch_sizes
-Samba1 Llama3.1 Experts,70b,8192,False,"[1, 4, 8, 16, 32]"
-Samba1 Llama3.3 Experts,70b,4096,False,"[1, 4, 8, 16]"
-Samba1 Llama3.3 Experts,70b,65536,False,"[1, 2, 4]"
-Samba1 Llama3.2 Experts,3b-surgery,16384,False,"[1, 2, 4]"
+Samba1 DeepSeek Experts,671b,4096,False,[1]
 Samba1 Embedding Experts,7b,4096,False,"[1, 4, 8, 16, 32]"
-Samba1 Llama3.2 Vision Experts,90b,4096,False,[1]
-Samba1 Llama3.3 Experts,70b,131072,False,"[1, 2]"
-Samba1 Qwen2.5 Experts,7b,8192,False,"[1, 2, 4, 8, 16]"
+Samba1 Embedding Experts,7b,8192,False,"[1, 4, 8, 16, 32]"
+Samba1 Llama3.1 Experts,70b,131072,False,"[1, 2]"
+Samba1 Llama3.1 Experts,70b,32768,False,[1]
 Samba1 Llama3.1 Experts,70b,4096,False,"[1, 4, 8, 16]"
 Samba1 Llama3.1 Experts,70b,65536,False,"[1, 2, 4]"
-Samba1 Llama3.1 Experts,70b,32768,False,[1]
+Samba1 Llama3.1 Experts,70b,8192,False,"[1, 4, 8, 16, 32]"
+Samba1 Llama3.2 Experts,3b-surgery,16384,False,"[1, 2, 4]"
 Samba1 Llama3.2 Vision Experts,11b,4096,False,"[1, 4]"
-Samba1 Mistral Experts,7b,16384,False,"[1, 2, 4, 8, 16]"
-Samba1 Llama3.1 Experts,70b,131072,False,"[1, 2]"
-Samba1 DeepSeek Experts,671b,8192,False,[1]
+Samba1 Llama3.2 Vision Experts,90b,4096,False,[1]
+Samba1 Llama3.3 Experts,70b,131072,False,"[1, 2]"
+Samba1 Llama3.3 Experts,70b,4096,False,"[1, 4, 8, 16]"
+Samba1 Llama3.3 Experts,70b,65536,False,"[1, 2, 4]"
 Samba1 Llama3.3 Experts,70b,8192,False,"[1, 4, 8, 16, 32]"
-Samba1 Mistral Experts,8x22b,4096,False,"[1, 16]"
-Samba1 Embedding Experts,7b,8192,False,"[1, 4, 8, 16, 32]"
+Samba1 Mistral Experts,7b,16384,False,"[1, 2, 4, 8, 16]"
 Samba1 Mistral Experts,7b,8192,False,"[1, 2, 4, 8, 16]"
+Samba1 Mistral Experts,8x22b,4096,False,"[1, 16]"
+Samba1 Qwen2.5 Experts,7b,8192,False,"[1, 2, 4, 8, 16]"

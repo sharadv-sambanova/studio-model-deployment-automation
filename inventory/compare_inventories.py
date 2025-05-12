@@ -1,6 +1,7 @@
 import csv
 import json
 from utils import STUDIO_INVENTORY_PATH
+from schemas import InventoryKey
 
 CLOUD_INVENTORY_PATH="/Users/sharadv/code/studio-model-deployment-automation/inventory/output/cloud_inventory.csv"
 CLOUD_ONLY_OUTPUT="output/cloud_only_inventory.csv"
@@ -17,31 +18,21 @@ def get_inventories():
         int(row["model_parallel_rdus"]) == 16 and \
         row["model_app_name"].endswith("Experts")
 
-    # TODO: collapse these into one function
-    def studio_row_to_key(row):
-        key = (row["model_app_name"], row["param_count"], row["max_seq_length"], row["spec_decoding"])
-        key = tuple(str(x).lower() for x in key)
-        return key
-    def cloud_row_to_key(row):
-        key = (row["model_app_name"], row["param_count"], row["max_seq_len"], row["spec_decoding"])
-        key = tuple(str(x).lower() for x in key)
-        return key
-
     cloud_inventory, studio_inventory = {}, {}
 
     with open(STUDIO_INVENTORY_PATH) as f:
         reader = csv.DictReader(f)
         for row in filter(studio_filter, reader):
-            studio_inventory[studio_row_to_key(row)] = row
+            studio_inventory[InventoryKey.from_input(row)] = row
     with open(CLOUD_INVENTORY_PATH) as f:
         reader = csv.DictReader(f)
         for row in reader:
-            cloud_inventory[cloud_row_to_key(row)] = row
+            cloud_inventory[InventoryKey.from_input(row)] = row
 
     return cloud_inventory, studio_inventory
 
-def compare_inventories(cloud_inventory, studio_inventory):
-    """Get the common, cloud_only, and studio_only inventory keys (sets of tuples)"""
+def compare_inventories(cloud_inventory: dict[InventoryKey, dict], studio_inventory: dict[InventoryKey, dict]):
+    """Get the common, cloud_only, and studio_only inventory keys (sets of InventoryKey)"""
     studio_keys = set(studio_inventory.keys())
     cloud_keys = set(cloud_inventory.keys())
     common = studio_keys.intersection(cloud_keys)
@@ -50,13 +41,7 @@ def compare_inventories(cloud_inventory, studio_inventory):
 
     return common, cloud_only, studio_only
 
-def write_cloud_only(keys, cloud, studio):
-# For each config in cloud inventory that's not in studio inventory
-#   It could be a config that matches an app_name + param_count + spec_decoding combination in Studio
-#   If so, we need to find the sibling PEFs and a checkpoint that Studio would use for that other combination
-#   Else, this is an entirely new config, so we don't have sibling PEFs or Studio checkpoints
-#     pass
-
+def write_cloud_only(keys: set[InventoryKey], cloud: dict[InventoryKey, dict], studio: dict[InventoryKey, dict]):
     fields = [
         "id",
         "model_app_name",
@@ -73,18 +58,19 @@ def write_cloud_only(keys, cloud, studio):
         "studio_model",
     ]
 
-    def find_sibling_artifacts(key):
+    def find_sibling_artifacts(key: InventoryKey):
         sibling_studio_pefs = []
         studio_model = None
         for other_key, row in studio.items():
-            if key[:2] == other_key[:2]:
+            if key.is_sibling(other_key):
                 sibling_studio_pefs.append(row["pef_path"])
                 studio_model = row["model_path"]
         return sibling_studio_pefs if sibling_studio_pefs else None, studio_model
+    
     with open(CLOUD_ONLY_OUTPUT, "w") as f:
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
-        for key in keys:
+        for key in sorted(keys, key= lambda x: str(x)):
             sibling_studio_pefs, studio_model = find_sibling_artifacts(key)
             row = {}
             for field in fields:
@@ -95,7 +81,7 @@ def write_cloud_only(keys, cloud, studio):
             writer.writerow(row)
 
 
-def write_studio_only(keys, studio):
+def write_studio_only(keys: set[InventoryKey], studio: dict[InventoryKey, dict]):
     fields = [
         "model_app_name",
         "param_count",
@@ -106,7 +92,7 @@ def write_studio_only(keys, studio):
     with open(STUDIO_ONLY_OUTPUT, "w") as f:
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
-        for key in keys:
+        for key in sorted(keys, key= lambda x: str(x)):
             row = {}
             for field in fields:
                 if field in studio[key]:
@@ -114,12 +100,12 @@ def write_studio_only(keys, studio):
             writer.writerow(row)
 
 
-def write_common(keys, cloud, studio):
+def write_common(keys: set[InventoryKey], cloud: dict[InventoryKey, dict], studio: dict[InventoryKey, dict]):
     fields = [
         "app_name",
         "param_count",
-        "max_seq_len",
-        "max_seq_len_cloud", 
+        "max_seq_length",
+        "max_seq_length_cloud", 
         "spec_decoding",
         "vocab_size",
         "cloud_only_bs",
@@ -132,16 +118,16 @@ def write_common(keys, cloud, studio):
     with open(COMMON_OUTPUT, "w") as f:
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
-        for key in keys:
+        for key in sorted(keys, key= lambda x: str(x)):
             cloud_row, studio_row = cloud[key], studio[key]
             cloud_bs, studio_bs = set(json.loads(cloud_row["batch_sizes"])), set(json.loads(studio_row["batch_sizes"]))
             # Same set of batch sizes, write it to the common inventory
             row = {
-                    "app_name": key[0],
-                    "param_count": key[1],
-                    "max_seq_len": key[2],
-                    "max_seq_len_cloud": cloud_row["max_seq_len_cloud"],
-                    "spec_decoding": key[3],
+                    "app_name": key.app_name,
+                    "param_count": key.param_count,
+                    "max_seq_length": key.max_seq_length,
+                    "max_seq_length_cloud": cloud_row["max_seq_length_cloud"],
+                    "spec_decoding": key.sd,
                     "vocab_size": studio_row["vocab_size"],
                     "cloud_only_bs": None,
                     "studio_only_bs": None,
