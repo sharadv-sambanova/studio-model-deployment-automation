@@ -1,6 +1,6 @@
 import csv
 import json
-from utils import STUDIO_INVENTORY_PATH
+from utils import STUDIO_INVENTORY_PATH, convert_seq_len
 from schemas import InventoryKey
 
 CLOUD_INVENTORY_PATH="/Users/sharadv/code/studio-model-deployment-automation/inventory/output/cloud_inventory.csv"
@@ -35,6 +35,7 @@ def compare_inventories(cloud_inventory: dict[InventoryKey, dict], studio_invent
     """Get the common, cloud_only, and studio_only inventory keys (sets of InventoryKey)"""
     studio_keys = set(studio_inventory.keys())
     cloud_keys = set(cloud_inventory.keys())
+    
     common = studio_keys.intersection(cloud_keys)
     cloud_only = cloud_keys.difference(studio_keys)
     studio_only = studio_keys.difference(cloud_keys)
@@ -44,27 +45,27 @@ def compare_inventories(cloud_inventory: dict[InventoryKey, dict], studio_invent
 def write_cloud_only(keys: set[InventoryKey], cloud: dict[InventoryKey, dict], studio: dict[InventoryKey, dict]):
     fields = [
         "id",
+        "group_id",
         "model_app_name",
         "experts",
         "param_count",
-        "max_seq_len",
-        "max_seq_len_cloud", 
+        "max_seq_length",
+        "max_seq_length_cloud", 
         "spec_decoding",
         "batch_sizes",
         "cloud_pefs_json",
-        "pefs",
-        "copy_pefs",
         "sibling_studio_pefs",
         "studio_model",
     ]
 
     def find_sibling_artifacts(key: InventoryKey):
-        sibling_studio_pefs = []
+        sibling_studio_pefs = {}
         studio_model = None
         for other_key, row in studio.items():
             if key.is_sibling(other_key):
-                sibling_studio_pefs.append(row["pef_path"])
-                studio_model = row["model_path"]
+                seq_len_key = convert_seq_len(other_key.max_seq_length, str)
+                sibling_studio_pefs[seq_len_key] = row["pef_path"].replace("{{ARTIFACTS_REPO}}", "sw-generic-daas-artifacts-dev")
+                studio_model = row["model_path"].replace("{{ARTIFACTS_REPO}}", "sw-generic-daas-artifacts-dev")
         return sibling_studio_pefs if sibling_studio_pefs else None, studio_model
     
     with open(CLOUD_ONLY_OUTPUT, "w") as f:
@@ -102,6 +103,7 @@ def write_studio_only(keys: set[InventoryKey], studio: dict[InventoryKey, dict])
 
 def write_common(keys: set[InventoryKey], cloud: dict[InventoryKey, dict], studio: dict[InventoryKey, dict]):
     fields = [
+        "id",
         "app_name",
         "param_count",
         "max_seq_length",
@@ -123,6 +125,7 @@ def write_common(keys: set[InventoryKey], cloud: dict[InventoryKey, dict], studi
             cloud_bs, studio_bs = set(json.loads(cloud_row["batch_sizes"])), set(json.loads(studio_row["batch_sizes"]))
             # Same set of batch sizes, write it to the common inventory
             row = {
+                    "id": str(key),
                     "app_name": key.app_name,
                     "param_count": key.param_count,
                     "max_seq_length": key.max_seq_length,

@@ -86,8 +86,8 @@ class InventoryKey:
         Instances of this class must be instantiated with from_input()
     """
     app_name: str
-    param_count: int
-    sd: float
+    param_count: str
+    sd: bool
     max_seq_length: int
 
     fields_aliases = {
@@ -99,6 +99,7 @@ class InventoryKey:
 
     @classmethod
     def lookup_field(cls, fieldname: str, obj):
+        """Get the value of fieldname from obj. obj may be a dict or an arbitrary object"""
         if isinstance(obj, dict):
             for alias in InventoryKey.fields_aliases[fieldname]:
                 if alias in obj:
@@ -118,6 +119,18 @@ class InventoryKey:
             For object-based instantiation the dict must have an attribute for each field in field(InventoryKey)
         """
 
+        def to_bool(val):
+            """Cast"""
+            if not isinstance(val, str):
+                return bool(s)
+            val_lower = val.lower()
+            if val_lower == "true":
+                return True
+            elif val_lower == "false":
+                return False
+            else:
+                raise ValueError(f"Invalid str for bool conversion: {val}")
+
         class InvalidDictForInventoryKey(Exception):
             pass
 
@@ -126,10 +139,14 @@ class InventoryKey:
 
         init_kwargs = {}
         field_names = {f.name for f in fields(cls)}
-
         try:
-            for field_name in field_names:
-                init_kwargs[field_name] = InventoryKey.lookup_field(field_name, obj)
+            for field in fields(cls):
+                # Get the value of the field from obj, cast it to the right type, store it in init_kwargs
+                if field.type == bool:
+                    val = to_bool(InventoryKey.lookup_field(field.name, obj))
+                else:
+                    val = field.type(InventoryKey.lookup_field(field.name, obj))
+                init_kwargs[field.name] = val
         except KeyError:
             raise InvalidDictForInventoryKey(
                 f"Expected keys {field_names} in dict used for InventoryKey initialization, got {sorted(list(obj.keys()))}"
@@ -148,12 +165,15 @@ class InventoryKey:
         s = s.replace(".", "d") # App name might have "."
         return s
 
+    @property
+    def group_id(self):
+        """Return the group ID of this inventory key, which consists of all fields besides max_seq_length"""
+        return "-".join(str(self).split("-")[:-1])
+
 
     def is_sibling(self, other_key: "InventoryKey"):
         """Check if this InventoryKey is a sibling of other_key. Sibling means Studio would load the artifacts for these keys together"""
-        return  self.app_name == other_key.app_name and \
-                self.param_count == other_key.param_count and  \
-                self.sd == other_key.sd
+        return  self.group_id == other_key.group_id
 
 
 class PEF():
@@ -209,14 +229,17 @@ class CloudConfig():
     @property
     def id(self) -> str:
         return str(self.key)
-
+    
+    @property
+    def group_id(self) -> str:
+        return self.key.group_id
 
     def add_deployment(self, deployment: str):
         self.deployments.add(deployment)
 
 
     def __str__(self):
-        return f"app_name: {self.app_name} | parameter_count: {self.param_count} | max_seq_len: {self.max_seq_length} | sd: {self.sd}"
+        return f"app_name: {self.app_name} | param_count: {self.param_count} | max_seq_length: {self.max_seq_length} | sd: {self.sd}"
 
 
     def get_checkpoint_path(self, experts: List[Expert], spec: Spec) -> str:
@@ -257,12 +280,17 @@ class CloudConfig():
         return pefs
 
 
-    fieldnames = ["id", "model_app_name", "experts", "deployments", "param_count", "max_seq_length", "max_seq_length_cloud", "spec_decoding", "batch_sizes", "cloud_pefs_json", "draft_experts"]
+    fieldnames = ["id", "group_id", "model_app_name", "experts", "deployments", "param_count", "max_seq_length", "max_seq_length_cloud", "spec_decoding", "batch_sizes", "cloud_pefs_json", "draft_experts"]
     def to_row(self) -> dict:
         """Return a dict representing this CloudConfig to be used for writing to a csv with DictWriter"""
 
+        cloud_pefs_json = {}
+        for pef in self.pefs.values():
+            cloud_pefs_json.update(pef.as_dict())
+
         return {
             "id": self.id,
+            "group_id": self.group_id,
             "model_app_name": self.app_name,
             "experts": sorted(list(self.expert_to_checkpoint.keys())),
             "deployments": self.deployments,
@@ -271,7 +299,7 @@ class CloudConfig():
             "max_seq_length_cloud": convert_seq_len(self.max_seq_length, str),
             "spec_decoding": self.sd, 
             "batch_sizes": self.batch_sizes, 
-            "cloud_pefs_json": {p.batch_size: p.as_dict() for p in sorted(list(self.pefs.values()), key = lambda x: x.batch_size)},
+            "cloud_pefs_json": cloud_pefs_json,
             "draft_experts": sorted(list(self.draft_experts))
         }
 
