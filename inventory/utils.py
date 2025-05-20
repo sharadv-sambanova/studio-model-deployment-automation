@@ -10,7 +10,7 @@ STUDIO_INVENTORY_PATH= DAAS_RELEASE_ROOT / "inventory/inventory_output/prod/mode
 CLOUD_MODELS_YAML = FAST_COE_ROOT / "helm/values.yaml"
 CLOUD_PROD_DEPLOYMENTS = FAST_COE_ROOT / "helm/inference-deployments/prod"
 
-MODEL_MAPPINGS_FILE = Path("/Users/sharadv/code/studio-model-deployment-automation/inventory/model_mappings.yaml")
+MODEL_MAPPINGS_FILE = Path(__file__).parent / "model_mappings.yaml"
 with open(MODEL_MAPPINGS_FILE) as f:
     MODEL_MAPPINGS=yaml.safe_load(f)
 with open(CLOUD_MODELS_YAML) as f:

@@ -1,9 +1,11 @@
 import csv
 import json
+
 from utils import STUDIO_INVENTORY_PATH, convert_seq_len
 from schemas import InventoryKey
+from compare_pefs import compare_pefs
+from cloud_inventory import OUTPUT_FILE as CLOUD_INVENTORY_PATH
 
-CLOUD_INVENTORY_PATH="/Users/sharadv/code/studio-model-deployment-automation/inventory/output/cloud_inventory.csv"
 CLOUD_ONLY_OUTPUT="output/cloud_only_inventory.csv"
 STUDIO_ONLY_OUTPUT="output/studio_only_inventory.csv"
 COMMON_OUTPUT="output/common_inventory.csv"
@@ -31,7 +33,7 @@ def get_inventories():
 
     return cloud_inventory, studio_inventory
 
-def compare_inventories(cloud_inventory: dict[InventoryKey, dict], studio_inventory: dict[InventoryKey, dict]):
+def compare_inventory_keys(cloud_inventory: dict[InventoryKey, dict], studio_inventory: dict[InventoryKey, dict]):
     """Get the common, cloud_only, and studio_only inventory keys (sets of InventoryKey)"""
     studio_keys = set(studio_inventory.keys())
     cloud_keys = set(cloud_inventory.keys())
@@ -66,7 +68,7 @@ def write_cloud_only(keys: set[InventoryKey], cloud: dict[InventoryKey, dict], s
                 seq_len_key = convert_seq_len(other_key.max_seq_length, str)
                 sibling_studio_pefs[seq_len_key] = row["pef_path"].replace("{{ARTIFACTS_REPO}}", "sw-generic-daas-artifacts-dev")
                 studio_model = row["model_path"].replace("{{ARTIFACTS_REPO}}", "sw-generic-daas-artifacts-dev")
-        return sibling_studio_pefs if sibling_studio_pefs else None, studio_model
+        return sibling_studio_pefs if sibling_studio_pefs else None, studio_model        
     
     with open(CLOUD_ONLY_OUTPUT, "w") as f:
         writer = csv.DictWriter(f, fieldnames=fields)
@@ -110,20 +112,24 @@ def write_common(keys: set[InventoryKey], cloud: dict[InventoryKey, dict], studi
         "max_seq_length_cloud", 
         "spec_decoding",
         "vocab_size",
-        "cloud_only_bs",
-        "studio_only_bs",
-        "common_bs",
         "cloud_pefs_json",
         "studio_pef",
         "studio_model",
+        "studio_only_bs",
+        "cloud_only_bs",
+        "common_bs",
+        "common_bs_matching_pefs",
+        "common_bs_different_pefs",
+        "common_bs_different_pefs_json",
+        "date_difference_for_nonmatching_pefs",
     ]
+
     with open(COMMON_OUTPUT, "w") as f:
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
         for key in sorted(keys, key= lambda x: str(x)):
             cloud_row, studio_row = cloud[key], studio[key]
             cloud_bs, studio_bs = set(json.loads(cloud_row["batch_sizes"])), set(json.loads(studio_row["batch_sizes"]))
-            # Same set of batch sizes, write it to the common inventory
             row = {
                     "id": str(key),
                     "app_name": key.app_name,
@@ -132,28 +138,28 @@ def write_common(keys: set[InventoryKey], cloud: dict[InventoryKey, dict], studi
                     "max_seq_length_cloud": cloud_row["max_seq_length_cloud"],
                     "spec_decoding": key.sd,
                     "vocab_size": studio_row["vocab_size"],
-                    "cloud_only_bs": None,
-                    "studio_only_bs": None,
-                    "common_bs": sorted(list(cloud_bs)),
                     "cloud_pefs_json": cloud_row["cloud_pefs_json"],
                     "studio_pef": studio_row["pef_path"],
                     "studio_model": studio_row["model_path"],
                 }
-            if cloud_bs != studio_bs:
-                cloud_only_bs = cloud_bs.difference(studio_bs)
-                studio_only_bs = studio_bs.difference(cloud_bs)
-                common_bs = cloud_bs.intersection(studio_bs)
-                row["cloud_only_bs"] = sorted(list(cloud_only_bs)) if len(cloud_only_bs) > 0 else None
-                row["studio_only_bs"] = sorted(list(studio_only_bs)) if len(studio_only_bs) > 0 else None
-                row["common_bs"] = sorted(list(common_bs)) if len(common_bs) > 0 else None
+            common_bs = sorted(list(cloud_bs.intersection(studio_bs)))
+            cloud_only_bs = sorted(list(cloud_bs.difference(studio_bs)))
+            studio_only_bs = sorted(list(studio_bs.difference(cloud_bs)))
+            common_bs_with_matching_pefs, common_bs_different_pefs, date_difference = compare_pefs(json.loads(cloud_row["cloud_pefs_json"]), studio_row["pef_path"], common_bs)
+            row["studio_only_bs"] = studio_only_bs
+            row["cloud_only_bs"] = cloud_only_bs
+            row["common_bs"] = common_bs
+            row["common_bs_matching_pefs"] = common_bs_with_matching_pefs
+            row["common_bs_different_pefs"] = sorted(list(date_difference.keys()))
+            row["common_bs_different_pefs_json"] = common_bs_different_pefs
+
+            row["date_difference_for_nonmatching_pefs"] = date_difference
             writer.writerow(row)
+
 
 if __name__ == "__main__":
     cloud_inventory, studio_inventory = get_inventories()
-    common, cloud_only, studio_only = compare_inventories(cloud_inventory, studio_inventory)
+    common, cloud_only, studio_only = compare_inventory_keys(cloud_inventory, studio_inventory)
     write_common(common, cloud_inventory, studio_inventory)
     write_cloud_only(cloud_only, cloud_inventory, studio_inventory)
     write_studio_only(studio_only, studio_inventory)
-
-
-

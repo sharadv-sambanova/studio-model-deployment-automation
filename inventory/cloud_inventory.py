@@ -3,8 +3,9 @@ import os
 from schemas import InferenceDeployment, CloudConfig, InventoryKey
 import csv
 from utils import CLOUD_PROD_DEPLOYMENTS
+from pathlib import Path
 
-OUTPUT_FILE = "output/cloud_inventory.csv"
+OUTPUT_FILE = Path(__file__).parent / "output/cloud_inventory.csv"
 
 
 def load_deployments():
@@ -35,25 +36,6 @@ def get_cloud_configs(inference_deployments):
     return cloud_configs
 
 
-def merge_deployments(deployments: dict[str, InferenceDeployment]):
-    """Merge ModelConfigs across multiple deployments"""
-    all_configs = None
-    for deployment in deployments.values():
-        # For the first deployment, just get all the configs
-        if all_configs is None:
-            all_configs = deployment.spec._model_configs
-        else:
-            # For subsequent deployments,
-            for key, model_config in deployment.spec._model_configs.items():
-                # If the config is one we already have, merge them together
-                if key in all_configs:
-                    all_configs[key].merge(model_config)
-                # or add new ones
-                else:
-                    all_configs[key] = model_config
-
-    return all_configs
-
 def write_inventory(configs: dict[InventoryKey, CloudConfig]):
     with open(OUTPUT_FILE, "w") as f:
         writer = csv.DictWriter(f, fieldnames=CloudConfig.fieldnames)
@@ -65,6 +47,5 @@ def write_inventory(configs: dict[InventoryKey, CloudConfig]):
 
 if __name__ == "__main__":
     deployments = load_deployments()
-    #configs = merge_deployments(deployments)
     configs = get_cloud_configs(deployments)
     write_inventory(configs)
