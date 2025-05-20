@@ -3,6 +3,7 @@ from pydantic import BaseModel, Field, PrivateAttr
 from typing import List, Dict, Optional, Union
 from utils import get_expert_seq_len, get_app_name, get_parameter_count, normalize_expert_name, get_pef_jira, convert_seq_len
 from dataclasses import dataclass, fields
+import json
 
 ######## Pydantic classes for cloud deployment yamls ############
 
@@ -122,7 +123,7 @@ class InventoryKey:
         def to_bool(val):
             """Cast"""
             if not isinstance(val, str):
-                return bool(s)
+                return bool(val)
             val_lower = val.lower()
             if val_lower == "true":
                 return True
@@ -287,7 +288,6 @@ class CloudConfig():
         cloud_pefs_json = {}
         for pef in self.pefs.values():
             cloud_pefs_json.update(pef.as_dict())
-
         return {
             "id": self.id,
             "group_id": self.group_id,
@@ -299,7 +299,7 @@ class CloudConfig():
             "max_seq_length_cloud": convert_seq_len(self.max_seq_length, str),
             "spec_decoding": self.sd, 
             "batch_sizes": self.batch_sizes, 
-            "cloud_pefs_json": cloud_pefs_json,
+            "cloud_pefs_json": json.dumps(cloud_pefs_json),
             "draft_experts": sorted(list(self.draft_experts))
         }
 
