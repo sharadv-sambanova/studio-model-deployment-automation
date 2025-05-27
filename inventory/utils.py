@@ -3,8 +3,8 @@ import yaml
 from pathlib import Path
 from typing import Union
 
-DAAS_RELEASE_ROOT = Path("/Users/sharadv/code/daas-release/")
-FAST_COE_ROOT = Path("/Users/sharadv/code/fast-coe")
+DAAS_RELEASE_ROOT = Path(__file__).parent.parent.parent / "daas-release"
+FAST_COE_ROOT = Path(__file__).parent.parent.parent / "fast-coe"
 
 STUDIO_INVENTORY_PATH= DAAS_RELEASE_ROOT / "inventory/inventory_output/prod/models_and_pefs_gtm.csv"
 CLOUD_MODELS_YAML = FAST_COE_ROOT / "helm/values.yaml"
