@@ -1,13 +1,59 @@
 import subprocess
 import json
+import yaml
 import base64
 import dateutil.parser
 from datetime import timezone
 import os
+from pathlib import Path
+import atexit
 
 
+CACHE_FILE = Path(__file__).parent / ".md5sum_cache.yaml"
+with open(CACHE_FILE) as f:
+    CACHE = yaml.safe_load(f)
+    if CACHE is None:
+        CACHE = {}
+
+def write_cache():
+    print("Writing cache...", end=" ")
+    with open(CACHE_FILE, "w") as f:
+        yaml.dump(CACHE, f)
+    print("done")
+
+# Write the updated cache before exiting
+atexit.register(write_cache)
+
+def cache_metadata(fn):
+    """
+        Decorator for caching PEF metadata to speed up metadata retrieval
+        Checks cache for metadata, then if cache miss runs retrieval function and caches the result
+    """
+    def check_cache(path: str):
+        return CACHE.get(path, None)
+
+    def update_cache(path: str, metadata: dict):
+        CACHE[path] = metadata
+
+    def wrapper(pef_path: str):
+        print(f"Checking cache for {pef_path}...", end=" ")
+        cached_val = check_cache(pef_path)
+        if cached_val is not None:
+            print("HIT")
+            return cached_val
+        print("MISS")
+        metadata = fn(pef_path)
+        update_cache(pef_path, metadata)
+        return metadata
+
+    return wrapper
+
+@cache_metadata
 def get_studio_pef_metadata(pef_path: str):
-    """Parse the data from the output of jf rt s <pef_path>. See below comment for an example of output"""
+    """
+        Retrieve pef metadata from JFrog.
+        Parses the data from the output of jf rt s <pef_path>. See below comment for an example of output
+    """
     # [
     #   {
     #     "path": "sw-generic-daas-artifacts-dev/inference-engine/2025/pefs/deepseek-r1-16k-fp8-pef-v3/bs1/coe_pef/sncprof.json.gz",
@@ -33,13 +79,21 @@ def get_studio_pef_metadata(pef_path: str):
         filepath = file_metadata["path"]
         # want the metadata for the .pef file specifically
         if filepath.endswith(".pef"):
-            return file_metadata["md5"], file_metadata["created"], filepath
+            return {
+                "md5": file_metadata["md5"], 
+                "upload_date": file_metadata["created"], 
+                "path": filepath
+            }
     
     raise ValueError(f"No .pef file found in output {out_json}")
 
 
+@cache_metadata
 def get_cloud_pef_metadata(pef_path: str):
-    """Parse data from the output of gsutil stat <filepath>. See comment for an example output"""
+    """
+        Retrieves PEF metadata (md5sum, upload date, path) from GCS.
+        Parses data from the output of gsutil stat <filepath>. See comment for an example output
+    """
 
     # <path>:
     #     Creation time:          Thu, 20 Feb 2025 18:27:17 GMT
@@ -69,7 +123,11 @@ def get_cloud_pef_metadata(pef_path: str):
         val = ":".join(line.split(":")[1:]).strip()
         data[key] = val
     data["md5_decoded"] = base64.b64decode(data["Hash (md5)"]).hex()
-    return data["md5_decoded"], data["Creation time"], data["path"]
+    return {
+        "md5": data["md5_decoded"], 
+        "upload_date": data["Creation time"], 
+        "path": data["path"]
+    }
 
 
 def date_difference(date1, date2):
@@ -96,16 +154,16 @@ def compare_pefs(cloud_pefs: dict[str, dict], studio_pef: str, common_bs: list[i
         studio_pef = os.path.join(studio_pef_folder, f"bs{bs}/coe_pef/")
         print(f"Comparing...\n{cloud_pef}\n{studio_pef}")
         
-        studio_md5, studio_upload_date, studio_pef_path = get_studio_pef_metadata(studio_pef)
-        cloud_md5, cloud_upload_date, cloud_pef_path = get_cloud_pef_metadata(cloud_pef)
+        studio_metadata = get_studio_pef_metadata(studio_pef)
+        cloud_metadata = get_cloud_pef_metadata(cloud_pef)
 
-        if studio_md5 != cloud_md5:
+        if studio_metadata["md5"] != cloud_metadata["md5"]:
             print(f"NOT A MATCH")
             bs_json = {
                 "batch_size": bs, 
-                "cloud_pef": {"path": cloud_pef_path, "upload_date": cloud_upload_date, "md5": cloud_md5}, 
-                "studio_pef": {"path": studio_pef_path, "upload_date": {studio_upload_date}, "md5": studio_md5},
-                "upload_date_difference_in_days": date_difference(cloud_upload_date, studio_upload_date)
+                "cloud_pef": cloud_metadata, 
+                "studio_pef": studio_metadata,
+                "upload_date_difference_in_days": date_difference(cloud_metadata["upload_date"], studio_metadata["upload_date"])
             }
             common_bs_different_pefs.append(bs_json)
         else:
