@@ -84,23 +84,16 @@ def write_cloud_only(keys: set[InventoryKey], cloud: dict[InventoryKey, dict], s
             writer.writerow(row)
 
 
-def write_studio_only(keys: set[InventoryKey], studio: dict[InventoryKey, dict]):
-    fields = [
-        "model_app_name",
-        "param_count",
-        "max_seq_length",
-        "spec_decoding",
-        "batch_sizes",
-    ]
-    with open(STUDIO_ONLY_OUTPUT, "w") as f:
-        writer = csv.DictWriter(f, fieldnames=fields)
-        writer.writeheader()
-        for key in sorted(keys, key= lambda x: str(x)):
-            row = {}
-            for field in fields:
-                if field in studio[key]:
-                    row[field] = studio[key][field]
-            writer.writerow(row)
+# def write_to_onboard(common: list[dict], cloud_only: list[dict]):
+#     """
+#         For each row in common
+#             if the row has nonmatching pefs OR if the 
+#             add a row for the cloud batch sizes that don't match
+#     """
+#     rows = []
+#     for row in common:
+#         if row['common_bs_different_pefs'] != []:
+            
 
 
 def write_common(keys: set[InventoryKey], cloud: dict[InventoryKey, dict], studio: dict[InventoryKey, dict]):
@@ -154,6 +147,25 @@ def write_common(keys: set[InventoryKey], cloud: dict[InventoryKey, dict], studi
             row["common_bs_different_pefs_json"] = common_bs_different_pefs
 
             row["date_difference_for_nonmatching_pefs"] = date_difference
+            writer.writerow(row)
+
+
+def write_studio_only(keys: set[InventoryKey], studio: dict[InventoryKey, dict]):
+    fields = [
+        "model_app_name",
+        "param_count",
+        "max_seq_length",
+        "spec_decoding",
+        "batch_sizes",
+    ]
+    with open(STUDIO_ONLY_OUTPUT, "w") as f:
+        writer = csv.DictWriter(f, fieldnames=fields)
+        writer.writeheader()
+        for key in sorted(keys, key= lambda x: str(x)):
+            row = {}
+            for field in fields:
+                if field in studio[key]:
+                    row[field] = studio[key][field]
             writer.writerow(row)
 
 
