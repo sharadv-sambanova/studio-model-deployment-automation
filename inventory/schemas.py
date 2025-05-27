@@ -304,6 +304,24 @@ class CloudConfig():
         }
 
 
+    gtm_fieldnames = ["model_name", "rdu_arch", "model_parallel_rdus", "spec_decoding", "mode", "max_seq_length", "batch_sizes"]
+    def to_gtm_rows(self) -> list[dict]:
+        """Return a list of dicts, each dict representing a model in this CloudConfig to be used for writing to a GTM-friendly csv with DictWriter"""
+        rows = []
+        for model_name in sorted(list(self.expert_to_checkpoint.keys())):
+            row = {
+                "model_name": model_name,
+                "rdu_arch": "sn40-16",
+                "model_parallel_rdus": 16,
+                "spec_decoding": self.sd,
+                "mode": "infer",
+                "max_seq_length": self.max_seq_length,
+                "batch_sizes": self.batch_sizes,
+            }
+            rows.append(row)
+        return rows
+
+
     def merge(self, other_config: "CloudConfig"):
         """Update this CloudConfig with the artifacts from the other_config"""
         self.pefs.update(other_config.pefs)
