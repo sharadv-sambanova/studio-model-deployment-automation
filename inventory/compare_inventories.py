@@ -1,5 +1,6 @@
 import csv
 import json
+from typing import Dict, Set
 
 from utils import STUDIO_INVENTORY_PATH, convert_seq_len
 from schemas import InventoryKey
@@ -33,7 +34,7 @@ def get_inventories():
 
     return cloud_inventory, studio_inventory
 
-def compare_inventory_keys(cloud_inventory: dict[InventoryKey, dict], studio_inventory: dict[InventoryKey, dict]):
+def compare_inventory_keys(cloud_inventory: Dict[InventoryKey, Dict], studio_inventory: Dict[InventoryKey, Dict]):
     """Get the common, cloud_only, and studio_only inventory keys (sets of InventoryKey)"""
     studio_keys = set(studio_inventory.keys())
     cloud_keys = set(cloud_inventory.keys())
@@ -44,7 +45,7 @@ def compare_inventory_keys(cloud_inventory: dict[InventoryKey, dict], studio_inv
 
     return common, cloud_only, studio_only
 
-def write_cloud_only(keys: set[InventoryKey], cloud: dict[InventoryKey, dict], studio: dict[InventoryKey, dict]):
+def write_cloud_only(keys: Set[InventoryKey], cloud: Dict[InventoryKey, Dict], studio: Dict[InventoryKey, Dict]):
     fields = [
         "id",
         "group_id",
@@ -96,7 +97,7 @@ def write_cloud_only(keys: set[InventoryKey], cloud: dict[InventoryKey, dict], s
             
 
 
-def write_common(keys: set[InventoryKey], cloud: dict[InventoryKey, dict], studio: dict[InventoryKey, dict]):
+def write_common(keys: Set[InventoryKey], cloud: Dict[InventoryKey, Dict], studio: Dict[InventoryKey, Dict]):
     fields = [
         "id",
         "app_name",
@@ -150,7 +151,7 @@ def write_common(keys: set[InventoryKey], cloud: dict[InventoryKey, dict], studi
             writer.writerow(row)
 
 
-def write_studio_only(keys: set[InventoryKey], studio: dict[InventoryKey, dict]):
+def write_studio_only(keys: Set[InventoryKey], studio: Dict[InventoryKey, Dict]):
     fields = [
         "model_app_name",
         "param_count",

@@ -1,0 +1,6 @@
+dataclasses==0.8
+pydantic==1.9.2
+python-dateutil==2.9.0.post0
+PyYAML==6.0.1
+six==1.17.0
+typing-extensions==4.1.1
