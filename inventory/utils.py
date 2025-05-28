@@ -1,7 +1,7 @@
 import re
 import yaml
 from pathlib import Path
-from typing import Union
+from typing import Union, Dict
 
 DAAS_RELEASE_ROOT = Path(__file__).parent.parent.parent / "daas-release"
 FAST_COE_ROOT = Path(__file__).parent.parent.parent / "fast-coe"
@@ -98,7 +98,7 @@ def normalize_expert_name(expert_name) -> str:
         return expert_name
 
 
-def get_mapping(expert_name) -> dict[str, str]:
+def get_mapping(expert_name) -> Dict[str, str]:
     """Lookup the expert's normalized name in the MODEL_MAPPINGS_FILE"""
 
     class UnknownExpertError(Exception):

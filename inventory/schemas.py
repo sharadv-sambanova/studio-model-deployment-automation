@@ -1,6 +1,6 @@
 
 from pydantic import BaseModel, Field, PrivateAttr
-from typing import List, Dict, Optional, Union
+from typing import List, Dict, Optional, Union, Tuple
 from utils import get_expert_seq_len, get_app_name, get_parameter_count, normalize_expert_name, get_pef_jira, convert_seq_len
 from dataclasses import dataclass, fields
 import json
@@ -46,7 +46,7 @@ class Spec(BaseModel):
 
     # The model configs defined by this inference deployment spec
     # Private attribute, not used by pydantic
-    _cloud_configs: dict = PrivateAttr(default_factory = dict)
+    _cloud_configs: Dict = PrivateAttr(default_factory = dict)
 
     def model_post_init(self, __context):
         if not hasattr(self, '_model_configs'):
@@ -196,7 +196,7 @@ class PEF():
     def __eq__(self, other_pef: "PEF"):
         return self.path == other_pef.path
 
-    def as_dict(self) -> dict[str, str]:
+    def as_dict(self) -> Dict[str, str]:
         return {
             self.batch_size: 
             {
@@ -259,7 +259,7 @@ class CloudConfig():
         return spec.checkpoints[unique_checkpoints.pop()].source
 
 
-    def process_sd(self, spec: Spec) -> tuple[bool, set]:
+    def process_sd(self, spec: Spec) -> Tuple[bool, set]:
         """Return whether this CloudConfig is a target model, and corresponding draft models if so"""
         sd, draft_experts = False, set()
         for sd_config in spec.speculative_decoding:
@@ -270,7 +270,7 @@ class CloudConfig():
         return sd, draft_experts
 
 
-    def build_pefs(self, experts: list[Expert], spec: Spec) -> dict[str, PEF]:
+    def build_pefs(self, experts: List[Expert], spec: Spec) -> Dict[str, PEF]:
         """Process the list of experts to create PEF objects for this CloudConfig"""
 
         class NonUniquePEFsError(Exception):
@@ -286,7 +286,7 @@ class CloudConfig():
 
 
     fieldnames = ["id", "group_id", "model_app_name", "experts", "deployments", "param_count", "max_seq_length", "max_seq_length_cloud", "spec_decoding", "batch_sizes", "cloud_pefs_json", "draft_experts"]
-    def to_row(self) -> dict:
+    def to_row(self) -> Dict:
         """Return a dict representing this CloudConfig to be used for writing to a csv with DictWriter"""
 
         # filter out models and apps with these substrings
@@ -322,7 +322,7 @@ class CloudConfig():
 
 
     gtm_fieldnames = ["model_name", "rdu_arch", "model_parallel_rdus", "spec_decoding", "mode", "max_seq_length", "batch_sizes"]
-    def to_gtm_rows(self) -> list[dict]:
+    def to_gtm_rows(self) -> List[Dict]:
         """Return a list of dicts, each dict representing a model in this CloudConfig to be used for writing to a GTM-friendly csv with DictWriter"""
 
         # filter out models with these substrings

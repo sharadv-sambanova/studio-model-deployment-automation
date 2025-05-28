@@ -4,6 +4,7 @@ from schemas import InferenceDeployment, CloudConfig, InventoryKey
 import csv
 from utils import CLOUD_PROD_DEPLOYMENTS
 from pathlib import Path
+from typing import Dict
 
 OUTPUT_FILE = Path(__file__).parent / "output/cloud_inventory.csv"
 GTM_OUTPUT_FILE = Path(__file__).parent / "output/cloud_inventory_gtm.csv"
@@ -37,7 +38,7 @@ def get_cloud_configs(inference_deployments):
     return cloud_configs
 
 
-def write_inventory(configs: dict[InventoryKey, CloudConfig]):
+def write_inventory(configs: Dict[InventoryKey, CloudConfig]):
     with open(OUTPUT_FILE, "w") as f:
         writer = csv.DictWriter(f, fieldnames=CloudConfig.fieldnames)
         writer.writeheader()
@@ -48,7 +49,7 @@ def write_inventory(configs: dict[InventoryKey, CloudConfig]):
                 writer.writerow(row)
 
 
-def write_inventory_gtm(configs: dict[InventoryKey, CloudConfig]):
+def write_inventory_gtm(configs: Dict[InventoryKey, CloudConfig]):
     with open(GTM_OUTPUT_FILE, "w") as f:
         writer = csv.DictWriter(f, fieldnames=CloudConfig.gtm_fieldnames)
         writer.writeheader()

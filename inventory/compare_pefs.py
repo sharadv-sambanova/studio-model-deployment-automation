@@ -7,6 +7,7 @@ from datetime import timezone
 import os
 from pathlib import Path
 import atexit
+from typing import Dict, List
 
 
 CACHE_FILE = Path(__file__).parent / ".md5sum_cache.yaml"
@@ -32,7 +33,7 @@ def cache_metadata(fn):
     def check_cache(path: str):
         return CACHE.get(path, None)
 
-    def update_cache(path: str, metadata: dict):
+    def update_cache(path: str, metadata: Dict):
         CACHE[path] = metadata
 
     def wrapper(pef_path: str):
@@ -144,7 +145,7 @@ def date_difference(date1, date2):
     delta = dt1_utc - dt2_utc
     return delta.days 
 
-def compare_pefs(cloud_pefs: dict[str, dict], studio_pef: str, common_bs: list[int]):
+def compare_pefs(cloud_pefs: Dict[str, Dict], studio_pef: str, common_bs: List[int]):
     common_bs_with_matching_pefs, common_bs_different_pefs = [], []
     studio_pef_folder = studio_pef.replace("{{ARTIFACTS_REPO}}", "sw-generic-daas-artifacts-dev")
     for bs in common_bs:
