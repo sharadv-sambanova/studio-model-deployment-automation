@@ -5,6 +5,7 @@ import csv
 from utils import CLOUD_PROD_DEPLOYMENTS
 from pathlib import Path
 from typing import Dict
+from pdb import set_trace as breakpoint
 
 OUTPUT_FILE = Path(__file__).parent / "output/cloud_inventory.csv"
 GTM_OUTPUT_FILE = Path(__file__).parent / "output/cloud_inventory_gtm.csv"
@@ -28,6 +29,7 @@ def load_deployments():
 
 def get_cloud_configs(inference_deployments):
     cloud_configs = {}
+    breakpoint()
     for deployment_name, inference_deployment in inference_deployments.items():
         spec = inference_deployment.spec
         for key, config in spec._cloud_configs.items():
