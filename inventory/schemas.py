@@ -289,6 +289,19 @@ class CloudConfig():
     def to_row(self) -> dict:
         """Return a dict representing this CloudConfig to be used for writing to a csv with DictWriter"""
 
+        # filter out models and apps with these substrings
+        filter_substrings = [
+            "ricoh",
+            "maitai",
+            "hume"
+        ]
+
+        def model_filter(model_list):
+            return [m for m in model_list if not any([s in m.lower() for s in filter_substrings])]
+
+        if any([s in self.app_name.lower() for s in filter_substrings]):
+            return None
+        
         cloud_pefs_json = {}
         for pef in self.pefs.values():
             cloud_pefs_json.update(pef.as_dict())
@@ -296,7 +309,7 @@ class CloudConfig():
             "id": self.id,
             "group_id": self.group_id,
             "model_app_name": self.app_name,
-            "experts": sorted(list(self.expert_to_checkpoint.keys())),
+            "experts": model_filter(sorted(list(self.expert_to_checkpoint.keys()))),
             "deployments": sorted(list(self.deployments)),
             "param_count": self.param_count, 
             "max_seq_length": convert_seq_len(self.max_seq_length, int), 
@@ -311,8 +324,18 @@ class CloudConfig():
     gtm_fieldnames = ["model_name", "rdu_arch", "model_parallel_rdus", "spec_decoding", "mode", "max_seq_length", "batch_sizes"]
     def to_gtm_rows(self) -> list[dict]:
         """Return a list of dicts, each dict representing a model in this CloudConfig to be used for writing to a GTM-friendly csv with DictWriter"""
+
+        # filter out models with these substrings
+        filter_substrings = [
+            "ricoh",
+            "maitai",
+            "hume"
+        ]
+
         rows = []
         for model_name in sorted(list(self.expert_to_checkpoint.keys())):
+            if any([s in model_name.lower() for s in filter_substrings]):
+                continue
             row = {
                 "model_name": model_name,
                 "rdu_arch": "sn40-16",

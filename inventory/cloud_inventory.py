@@ -43,7 +43,9 @@ def write_inventory(configs: dict[InventoryKey, CloudConfig]):
         writer.writeheader()
         sorted_keys = sorted(configs.keys(), key=lambda x: str(x))
         for key in sorted_keys:
-            writer.writerow(configs[key].to_row())
+            row = configs[key].to_row()
+            if row is not None:
+                writer.writerow(row)
 
 
 def write_inventory_gtm(configs: dict[InventoryKey, CloudConfig]):
