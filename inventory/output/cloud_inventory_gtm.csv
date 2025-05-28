@@ -20,6 +20,12 @@ Llama-3.1-Swallow-70B-Instruct-v0.3,sn40-16,16,True,infer,16384,"[1, 2, 4]"
 Llama-3.1-Swallow-8B-Instruct-v0.3,sn40-16,16,False,infer,4096,"[1, 2, 4, 8, 16]"
 Llama-3.1-Swallow-8B-Instruct-v0.3,sn40-16,16,False,infer,8192,"[1, 2, 4, 8, 16]"
 Llama-3.1-Swallow-8B-Instruct-v0.3,sn40-16,16,False,infer,16384,"[1, 2, 4]"
+Llama-3.1-Tulu-3-405B,sn40-16,16,True,infer,4096,"[1, 2, 4]"
+Llama-3.1-Tulu-3-405B,sn40-16,16,True,infer,8192,[1]
+Llama-3.1-Tulu-3-405B,sn40-16,16,True,infer,16384,[1]
+Llama-3.1-Tulu-3-8B,sn40-16,16,False,infer,4096,"[1, 2, 4, 8, 16]"
+Llama-3.1-Tulu-3-8B,sn40-16,16,False,infer,8192,"[1, 2, 4, 8, 16]"
+Llama-3.1-Tulu-3-8B,sn40-16,16,False,infer,16384,"[1, 2, 4]"
 Llama-3.3-Swallow-70B-Instruct-v0.4,sn40-16,16,True,infer,4096,"[1, 2, 4, 8, 16, 32]"
 Llama-3.3-Swallow-70B-Instruct-v0.4,sn40-16,16,True,infer,8192,"[1, 2, 4, 8]"
 Llama-3.3-Swallow-70B-Instruct-v0.4,sn40-16,16,True,infer,16384,"[1, 2, 4]"
