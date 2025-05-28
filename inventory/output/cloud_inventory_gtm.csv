@@ -32,15 +32,54 @@ Llama-3.3-Ricoh-1B,sn40-16,16,False,infer,16384,"[1, 2, 4]"
 Llama-3.3-Ricoh-1B,sn40-16,16,False,infer,32768,"[1, 2, 4]"
 Llama-3.3-Ricoh-1B,sn40-16,16,False,infer,65536,[1]
 Llama-3.3-Ricoh-1B,sn40-16,16,False,infer,131072,[1]
+Llama-3.3-Ricoh-70B-20250325,sn40-16,16,True,infer,4096,"[1, 2, 4, 8, 16, 32]"
+Llama-3.3-Ricoh-70B-20250325,sn40-16,16,True,infer,8192,"[1, 2, 4, 8]"
+Llama-3.3-Ricoh-70B-20250325,sn40-16,16,True,infer,16384,"[1, 2, 4]"
+Llama-3.3-Ricoh-70B-20250325,sn40-16,16,True,infer,32768,"[1, 2, 4]"
+Llama-3.3-Ricoh-70B-20250325,sn40-16,16,True,infer,65536,[1]
+Llama-3.3-Ricoh-70B-20250325,sn40-16,16,True,infer,131072,[1]
+Llama-3.3-Swallow-70B-Instruct-v0.4,sn40-16,16,True,infer,4096,"[1, 2, 4, 8, 16, 32]"
+Llama-3.3-Swallow-70B-Instruct-v0.4,sn40-16,16,True,infer,8192,"[1, 2, 4, 8]"
+Llama-3.3-Swallow-70B-Instruct-v0.4,sn40-16,16,True,infer,16384,"[1, 2, 4]"
+Llama-3.3-Swallow-70B-Instruct-v0.4,sn40-16,16,True,infer,32768,"[1, 2, 4]"
+Llama-3.3-Swallow-70B-Instruct-v0.4,sn40-16,16,True,infer,65536,[1]
+Llama-3.3-Swallow-70B-Instruct-v0.4,sn40-16,16,True,infer,131072,[1]
 Llama-4-Maverick-17B-128E-Instruct,sn40-16,16,False,infer,4096,[1]
 Llama-4-Maverick-17B-128E-Instruct,sn40-16,16,False,infer,16384,[1]
 Llama-4-Maverick-17B-128E-Instruct,sn40-16,16,False,infer,65536,[1]
 Llama-4-Maverick-17B-128E-Instruct,sn40-16,16,False,infer,131072,[1]
 Llama-4-Maverick-17B-128E-Instruct-Text,sn40-16,16,False,infer,4096,[1]
 Llama-4-Scout-17B-16E-Instruct,sn40-16,16,False,infer,4096,[1]
+Maitai-Checkmate-Faq-V1,sn40-16,16,False,infer,4096,"[1, 2, 4, 8]"
+Maitai-Checkmate-Faq-V1,sn40-16,16,False,infer,8192,"[1, 2, 4, 8]"
+Maitai-Checkmate-Faq-V1,sn40-16,16,False,infer,16384,[1]
+Maitai-Correction,sn40-16,16,False,infer,4096,"[1, 2, 4, 8]"
+Maitai-Correction,sn40-16,16,False,infer,8192,"[1, 2, 4, 8]"
+Maitai-Correction,sn40-16,16,False,infer,16384,[1]
+Maitai-Evaluation,sn40-16,16,False,infer,4096,"[1, 2, 4, 8]"
+Maitai-Evaluation,sn40-16,16,False,infer,8192,"[1, 2, 4, 8]"
+Maitai-Evaluation,sn40-16,16,False,infer,16384,[1]
 Maitai-Phonely-Production-State-Determination-V4,sn40-16,16,False,infer,4096,"[1, 2, 4, 8]"
 Maitai-Phonely-Production-State-Determination-V4,sn40-16,16,False,infer,8192,"[1, 2, 4, 8]"
 Maitai-Phonely-Production-State-Determination-V4,sn40-16,16,False,infer,16384,[1]
+Maitai-Phonely-Response-Gen-One-Moment-Targeted,sn40-16,16,False,infer,4096,"[1, 2, 4, 8]"
+Maitai-Phonely-Response-Gen-One-Moment-Targeted,sn40-16,16,False,infer,8192,"[1, 2, 4, 8]"
+Maitai-Phonely-Response-Gen-One-Moment-Targeted,sn40-16,16,False,infer,16384,[1]
+Maitai-Popeyes-Cart-V6,sn40-16,16,False,infer,4096,"[1, 2, 4, 8]"
+Maitai-Popeyes-Cart-V6,sn40-16,16,False,infer,8192,"[1, 2, 4, 8]"
+Maitai-Popeyes-Cart-V6,sn40-16,16,False,infer,16384,[1]
+Maitai-Popeyes-End-V1-FT,sn40-16,16,False,infer,4096,"[1, 2, 4, 8]"
+Maitai-Popeyes-End-V1-FT,sn40-16,16,False,infer,8192,"[1, 2, 4, 8]"
+Maitai-Popeyes-End-V1-FT,sn40-16,16,False,infer,16384,[1]
+Maitai-Popeyes-Wait-V1,sn40-16,16,False,infer,4096,"[1, 2, 4, 8]"
+Maitai-Popeyes-Wait-V1,sn40-16,16,False,infer,8192,"[1, 2, 4, 8]"
+Maitai-Popeyes-Wait-V1,sn40-16,16,False,infer,16384,[1]
+Maitai-Qualification,sn40-16,16,False,infer,4096,"[1, 2, 4, 8]"
+Maitai-Qualification,sn40-16,16,False,infer,8192,"[1, 2, 4, 8]"
+Maitai-Qualification,sn40-16,16,False,infer,16384,[1]
+Maitai-Response-Gen-Developer-Role,sn40-16,16,False,infer,4096,"[1, 2, 4, 8]"
+Maitai-Response-Gen-Developer-Role,sn40-16,16,False,infer,8192,"[1, 2, 4, 8]"
+Maitai-Response-Gen-Developer-Role,sn40-16,16,False,infer,16384,[1]
 Meta-Llama-3.1-405B-Instruct,sn40-16,16,True,infer,4096,"[1, 2, 4]"
 Meta-Llama-3.1-405B-Instruct,sn40-16,16,True,infer,8192,[1]
 Meta-Llama-3.1-405B-Instruct,sn40-16,16,True,infer,16384,[1]
@@ -50,6 +89,8 @@ Meta-Llama-3.1-70B-Instruct,sn40-16,16,True,infer,16384,"[1, 2, 4]"
 Meta-Llama-3.1-70B-Instruct,sn40-16,16,True,infer,32768,"[1, 4]"
 Meta-Llama-3.1-70B-Instruct,sn40-16,16,True,infer,65536,[1]
 Meta-Llama-3.1-70B-Instruct,sn40-16,16,True,infer,131072,[1]
+Meta-Llama-3.1-8B-Instruct,sn40-16,16,False,infer,4096,"[1, 2, 4, 8, 16]"
+Meta-Llama-3.1-8B-Instruct,sn40-16,16,False,infer,8192,"[1, 2, 4, 8, 16]"
 Meta-Llama-3.1-8B-Instruct,sn40-16,16,False,infer,16384,"[1, 2, 4]"
 Meta-Llama-3.2-1B-Distill-Instruct,sn40-16,16,False,infer,4096,"[1, 2, 4, 8, 16, 32]"
 Meta-Llama-3.2-1B-Distill-Instruct,sn40-16,16,False,infer,8192,"[1, 2, 4, 8, 16]"
@@ -77,6 +118,9 @@ QwQ-32B,sn40-16,16,True,infer,4096,"[1, 2, 4]"
 QwQ-32B,sn40-16,16,True,infer,8192,"[1, 2, 4]"
 QwQ-32B,sn40-16,16,True,infer,16384,[1]
 Qwen2-Audio-7B-Instruct,sn40-16,16,False,infer,4096,[1]
+Qwen2.5-0.5B-Instruct,sn40-16,16,False,infer,4096,"[1, 2, 4]"
+Qwen2.5-0.5B-Instruct,sn40-16,16,False,infer,8192,"[1, 2, 4]"
+Qwen2.5-0.5B-Instruct,sn40-16,16,False,infer,16384,[1]
 Qwen2.5-0.5B-SFT-Instruct,sn40-16,16,False,infer,4096,"[1, 2, 4]"
 Qwen2.5-0.5B-SFT-Instruct,sn40-16,16,False,infer,8192,"[1, 2, 4]"
 Qwen2.5-0.5B-SFT-Instruct,sn40-16,16,False,infer,16384,[1]
@@ -90,4 +134,10 @@ Qwen2.5-Coder-32B-Instruct,sn40-16,16,True,infer,4096,"[1, 2, 4]"
 Qwen2.5-Coder-32B-Instruct,sn40-16,16,True,infer,8192,"[1, 2, 4]"
 Qwen2.5-Coder-32B-Instruct,sn40-16,16,True,infer,16384,[1]
 Qwen3-32B,sn40-16,16,False,infer,8192,[1]
+Swallow-1B-Draft,sn40-16,16,False,infer,4096,"[1, 2, 4, 8, 16, 32]"
+Swallow-1B-Draft,sn40-16,16,False,infer,8192,"[1, 2, 4, 8, 16]"
+Swallow-1B-Draft,sn40-16,16,False,infer,16384,"[1, 2, 4, 8]"
+Swallow-1B-Draft,sn40-16,16,False,infer,32768,"[1, 2, 4]"
+Swallow-1B-Draft,sn40-16,16,False,infer,65536,[1]
+Swallow-1B-Draft,sn40-16,16,False,infer,131072,[1]
 Whisper-Large-v3,sn40-16,16,False,infer,4096,"[1, 16, 32]"

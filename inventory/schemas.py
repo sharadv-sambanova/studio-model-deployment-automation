@@ -56,7 +56,11 @@ class Spec(BaseModel):
     def _add_cloud_configs(self) -> Dict["InventoryKey", "CloudConfig"]:
         for expert_name, experts in self.experts.items():
             new_config = CloudConfig(expert_name, experts, self)
-            self._cloud_configs[new_config.key] = new_config
+            # Already seen this key in this deployment, merge them together
+            if new_config.key in self._cloud_configs:
+                self._cloud_configs[new_config.key].merge(new_config)
+            else:
+                self._cloud_configs[new_config.key] = new_config
 
     def set_deployment(self, deployment: str):
         for _, cloud_config in self._cloud_configs.items():
@@ -293,7 +297,7 @@ class CloudConfig():
             "group_id": self.group_id,
             "model_app_name": self.app_name,
             "experts": sorted(list(self.expert_to_checkpoint.keys())),
-            "deployments": self.deployments,
+            "deployments": sorted(list(self.deployments)),
             "param_count": self.param_count, 
             "max_seq_length": convert_seq_len(self.max_seq_length, int), 
             "max_seq_length_cloud": convert_seq_len(self.max_seq_length, str),
