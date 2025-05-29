@@ -296,10 +296,14 @@ class CloudConfig():
             "hume"
         ]
 
-        def model_filter(model_list):
-            return [m for m in model_list if not any([s in m.lower() for s in filter_substrings])]
+        def expert_filter(expert_list):
+            return [m for m in expert_list if not any([s in m.lower() for s in filter_substrings])]
 
         if any([s in self.app_name.lower() for s in filter_substrings]):
+            return None
+
+        filtered_experts = expert_filter(sorted(list(self.expert_to_checkpoint.keys())))
+        if filtered_experts == []:
             return None
         
         cloud_pefs_json = {}
@@ -309,7 +313,7 @@ class CloudConfig():
             "id": self.id,
             "group_id": self.group_id,
             "model_app_name": self.app_name,
-            "experts": model_filter(sorted(list(self.expert_to_checkpoint.keys()))),
+            "experts": filtered_experts,
             "deployments": sorted(list(self.deployments)),
             "param_count": self.param_count, 
             "max_seq_length": convert_seq_len(self.max_seq_length, int), 

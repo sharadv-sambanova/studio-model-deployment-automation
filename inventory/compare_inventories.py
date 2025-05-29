@@ -21,7 +21,7 @@ def get_inventories():
         row["rdu_arch"] == "sn40-16" and \
         int(row["model_parallel_rdus"]) == 16 and \
         row["model_app_name"].endswith("Experts")
-
+    
     cloud_inventory, studio_inventory = {}, {}
 
     with open(STUDIO_INVENTORY_PATH) as f:
@@ -35,7 +35,34 @@ def get_inventories():
 
     return cloud_inventory, studio_inventory
 
-def compare_inventory_keys(cloud_inventory: Dict[InventoryKey, Dict], studio_inventory: Dict[InventoryKey, Dict]):
+class InventoryComparer():
+
+    def __init__(self):
+        self.cloud_inventory, self.studio_inventory = get_inventories()
+        self.common, self.cloud_only, self.studio_only = self._compare_inventory_keys()
+
+    def _compare_inventory_keys(self):
+        """Get the common, cloud_only, and studio_only inventory keys (sets of InventoryKey)"""
+        studio_keys = set(studio_inventory.keys())
+        cloud_keys = set(cloud_inventory.keys())
+        
+        common = studio_keys.intersection(cloud_keys)
+        cloud_only = cloud_keys.difference(studio_keys)
+        studio_only = studio_keys.difference(cloud_keys)
+
+        return common, cloud_only, studio_only
+    
+    def _write_file(self, rows, fields, filename):
+        with open(filename, "w") as f:
+            writer = csv.DictWriter(f, fieldnames=fields)
+            writer.writeheader()
+            writer.writerows(rows)
+
+    def write(self):
+        pass
+
+
+def compare_inventory_keys(cloud_inventory, studio_inventory):
     """Get the common, cloud_only, and studio_only inventory keys (sets of InventoryKey)"""
     studio_keys = set(studio_inventory.keys())
     cloud_keys = set(cloud_inventory.keys())

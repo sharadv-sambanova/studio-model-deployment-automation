@@ -137,7 +137,7 @@ Meta-Llama-3.1-8B-Instruct:
   model_parameter_count: 8b
 
 Llama-4-Scout-17B-16E-Instruct:
-  app_name: Samba1 Llama4 Experts
+  app_name: Llama 4 Scout
   model_parameter_count: 17b
 
 DeepSeek-R1-Distill-Llama-70B:
