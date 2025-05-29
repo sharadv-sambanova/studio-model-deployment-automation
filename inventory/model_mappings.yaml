@@ -5,7 +5,7 @@
 # model_parameter_count is used by Studio for registering, and later mapping, models to PEFs 
 
 Llama-4-Maverick-17B-128E-Instruct:
-  app_name: Llama 4 Maverick
+  app_name: Samba1 Llama4 Experts
   model_parameter_count: 17b
 
 Maitai-Popeyes-Wait-V1:
@@ -33,7 +33,7 @@ Llama-3.1-Tulu-3-405B:
   model_parameter_count: 405b
 
 Qwen3-32B:
-  app_name: Qwen 3
+  app_name: Samba1 Qwen3 Experts
   model_parameter_count: 32b
 
 Maitai-Phonely-Production-State-Determination-V4:
@@ -73,7 +73,7 @@ Qwen2.5-Coder-0.5B-Instruct:
   model_parameter_count: 0.5b
 
 Llama-4-Maverick-17B-128E-Instruct-Text:
-  app_name: Llama 4 Maverick
+  app_name: Samba1 Llama4 Experts
   model_parameter_count: 17b
 
 Meta-Llama-3.2-3B-Instruct:
@@ -121,7 +121,7 @@ QwQ-32B:
   model_parameter_count: 32b-qwq
 
 Whisper-Large-v3:
-  app_name: Whisper
+  app_name: Samba1 Whisper Experts
   model_parameter_count: null
 
 Maitai-Phonely-Response-Gen-One-Moment-Targeted:
@@ -137,7 +137,7 @@ Meta-Llama-3.1-8B-Instruct:
   model_parameter_count: 8b
 
 Llama-4-Scout-17B-16E-Instruct:
-  app_name: Llama 4 Scout
+  app_name: Samba1 Llama4 Experts
   model_parameter_count: 17b
 
 DeepSeek-R1-Distill-Llama-70B:
