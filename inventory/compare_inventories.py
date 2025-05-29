@@ -90,19 +90,58 @@ def write_cloud_only(keys: Set[InventoryKey], cloud: Dict[InventoryKey, Dict], s
     return rows
 
 
-# def write_onboard_to_studio(common_rows: List[Dict], cloud_only_rows: List[Dict]):
-#     """
-#         For each row in common
-#             if the row has nonmatching pefs OR if the 
-#             add a row for the cloud batch sizes that don't match
-#     """
-#     rows = []
-#     with open(ONBOARD_TO_STUDIO_OUTPUT, "w") as f:
-#         for row in common_rows:
-#             rows.append(row)
-#     rows = []
-#     for row in common:
-#         if row['common_bs_different_pefs'] != []:
+def write_onboard_to_studio(common_rows: List[Dict], cloud_only_rows: List[Dict]):
+    """
+        For each row in common
+            if the row has nonmatching pefs OR if the 
+            add a row for the cloud batch sizes that don't match
+    """
+    fields = [
+        "id",
+        "group_id",
+        "model_app_name",
+        "experts",
+        "param_count",
+        "max_seq_length",
+        "max_seq_length_cloud", 
+        "vocab_size",
+        "spec_decoding",
+        "batch_sizes",
+        "studio_batch_sizes",
+        "cloud_pefs_json",
+        "cloud_models",
+        "studio_model",
+        "studio_pef",
+        "sibling_studio_pefs",
+        "onboard_cloud_models",
+        "is_new_config",
+    ]
+    rows = []
+    with open(ONBOARD_TO_STUDIO_OUTPUT, "w") as f:
+        writer = csv.DictWriter(f, fieldnames=fields)
+        writer.writeheader()
+        for common_row in common_rows:
+            # Only need to onboard rows in common where there are cloud-only BS PEFs or different PEFs for same BS
+            if common_row["cloud_only_bs"] == [] and common_row["common_bs_different_pefs"] == []:
+                continue
+
+            row = {}
+            for field in fields:
+                if field in common_row:
+                    row[field] = common_row[field]
+            row["onboard_cloud_models"] = row["studio_model"] is None
+            row["is_new_config"] = False
+            rows.append(row)
+        for cloud_only_row in cloud_only_rows:
+            row = {}
+            for field in fields:
+                if field in cloud_only_row:
+                    row[field] = cloud_only_row[field]
+            row["onboard_cloud_models"] = row["studio_model"] is None
+            row["is_new_config"] = True
+            rows.append(row) 
+        writer.writerows(rows)
+    return rows
 
 
 def write_common(keys: Set[InventoryKey], cloud: Dict[InventoryKey, Dict], studio: Dict[InventoryKey, Dict]):
@@ -128,12 +167,11 @@ def write_common(keys: Set[InventoryKey], cloud: Dict[InventoryKey, Dict], studi
         "vocab_size",
         "spec_decoding",
         "batch_sizes",
+        "studio_batch_sizes",
         "cloud_pefs_json",
         "cloud_models",
         "studio_model",
         "studio_pef",
-
-
         "sibling_studio_pefs",
         "studio_only_bs",
         "cloud_only_bs",
@@ -152,12 +190,13 @@ def write_common(keys: Set[InventoryKey], cloud: Dict[InventoryKey, Dict], studi
             cloud_bs, studio_bs = set(json.loads(cloud_row["batch_sizes"])), set(json.loads(studio_row["batch_sizes"]))
             row = {}
             for field in fields:
-                if field in cloud_row:
-                    row[field] = cloud_row[field]
                 if field in studio_row:
                     row[field] = studio_row[field]
+                if field in cloud_row:
+                    row[field] = cloud_row[field]
                 row["studio_model"] = studio_row["model_path"]
                 row["studio_pef"] = studio_row["pef_path"]
+                row["studio_batch_sizes"] = studio_row["batch_sizes"]
             sibling_studio_pefs, _ = find_sibling_artifacts(key)
             row["sibling_studio_pefs"] = sibling_studio_pefs
             # row = {
@@ -217,6 +256,7 @@ def write_studio_only(keys: Set[InventoryKey], studio: Dict[InventoryKey, Dict])
 if __name__ == "__main__":
     cloud_inventory, studio_inventory = get_inventories()
     common, cloud_only, studio_only = compare_inventory_keys(cloud_inventory, studio_inventory)
-    write_common(common, cloud_inventory, studio_inventory)
-    write_cloud_only(cloud_only, cloud_inventory, studio_inventory)
-    write_studio_only(studio_only, studio_inventory)
+    common_rows = write_common(common, cloud_inventory, studio_inventory)
+    cloud_only_rows = write_cloud_only(cloud_only, cloud_inventory, studio_inventory)
+    studio_only_rows = write_studio_only(studio_only, studio_inventory)
+    onboard_rows = write_onboard_to_studio(common_rows, cloud_only_rows)
