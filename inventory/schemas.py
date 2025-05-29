@@ -53,7 +53,7 @@ class Spec(BaseModel):
             self._model_configs = {}
         self._add_cloud_configs()
 
-    def _add_cloud_configs(self) -> Dict["InventoryKey", "CloudConfig"]:
+    def _add_cloud_configs(self):
         for expert_name, experts in self.experts.items():
             new_config = CloudConfig(expert_name, experts, self)
             # Already seen this key in this deployment, merge them together
@@ -190,13 +190,13 @@ class PEF():
         self.batch_size: int = expert.batch_size
         self.path: str = pefdata.source
         self.jira: str = get_pef_jira(self.path)
-        self.copy_pef: str = expert.copy_pef
+        self.copy_pef: Union[str, None] = expert.copy_pef
         self.sd: bool = is_sd
 
     def __eq__(self, other_pef: "PEF"):
         return self.path == other_pef.path
 
-    def as_dict(self) -> Dict[str, str]:
+    def as_dict(self) -> Dict[int, Dict]:
         return {
             self.batch_size: 
             {
@@ -220,14 +220,14 @@ class CloudConfig():
         self.max_seq_length: int = get_expert_seq_len(self.name)
         self.param_count: str = get_parameter_count(self.name)
         self.app_name: str = get_app_name(self.name)
-        self.deployments: str = set()
+        self.deployments: set = set()
         self.sd, self.draft_experts = self.process_sd(spec)
         self.pefs: Dict[str, PEF] = self.build_pefs(experts, spec)
         self.key = InventoryKey.from_input(self)
 
 
     @property
-    def batch_sizes(self) -> int:
+    def batch_sizes(self) -> List[int]:
         return sorted({p.batch_size for p in self.pefs.values()})
 
 
@@ -285,8 +285,8 @@ class CloudConfig():
         return pefs
 
 
-    fieldnames = ["id", "group_id", "model_app_name", "experts", "deployments", "param_count", "max_seq_length", "max_seq_length_cloud", "spec_decoding", "batch_sizes", "cloud_pefs_json", "draft_experts"]
-    def to_row(self) -> Dict:
+    fieldnames = ["id", "group_id", "model_app_name", "experts", "deployments", "param_count", "max_seq_length", "max_seq_length_cloud", "spec_decoding", "batch_sizes", "cloud_pefs_json", "cloud_models", "draft_experts"]
+    def to_row(self) -> Union[Dict, None]:
         """Return a dict representing this CloudConfig to be used for writing to a csv with DictWriter"""
 
         # filter out models and apps with these substrings
@@ -317,6 +317,7 @@ class CloudConfig():
             "spec_decoding": self.sd, 
             "batch_sizes": self.batch_sizes, 
             "cloud_pefs_json": json.dumps(cloud_pefs_json),
+            "cloud_models": self.expert_to_checkpoint,
             "draft_experts": sorted(list(self.draft_experts))
         }
 

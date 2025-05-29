@@ -57,6 +57,7 @@ def write_cloud_only(keys: Set[InventoryKey], cloud: Dict[InventoryKey, Dict], s
         "spec_decoding",
         "batch_sizes",
         "cloud_pefs_json",
+        "cloud_models",
         "sibling_studio_pefs",
         "studio_model",
     ]
