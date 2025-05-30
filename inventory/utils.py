@@ -124,3 +124,9 @@ def get_parameter_count(expert_name) -> str:
     """Get the model_parameter_count from the expert's MODEL_MAPPINGS_FILE entry"""
     expert_mapping = get_mapping(expert_name)
     return str(expert_mapping["model_parameter_count"])
+
+
+def replace_af_prefix(inp: str) -> str:
+    """Replace prefix variables from artifactory paths with their corresponding dev repo"""
+    inp = inp.replace("{{ARTIFACTS_REPO}}", "sw-generic-daas-artifacts-dev")
+    return inp

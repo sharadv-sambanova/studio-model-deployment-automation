@@ -2,7 +2,7 @@ import csv
 import json
 from typing import Dict, Set, List, Tuple, Union
 
-from utils import STUDIO_INVENTORY_PATH, convert_seq_len
+from utils import STUDIO_INVENTORY_PATH, convert_seq_len, replace_af_prefix
 from schemas import InventoryKey
 from compare_pefs import compare_pefs
 from cloud_inventory import OUTPUT_FILE as CLOUD_INVENTORY_PATH
@@ -177,8 +177,8 @@ class InventoryComparer():
                     row[field] = studio_row[field]
                 if field in cloud_row:
                     row[field] = cloud_row[field]
-                row["studio_model"] = studio_row["model_path"]
-                row["studio_pef"] = studio_row["pef_path"]
+                row["studio_model"] = replace_af_prefix(studio_row["model_path"])
+                row["studio_pef"] = replace_af_prefix(studio_row["pef_path"])
                 row["studio_batch_sizes"] = studio_row["batch_sizes"]
             sibling_studio_pefs, _ = self._find_sibling_artifacts(key)
             row["sibling_studio_pefs"] = sibling_studio_pefs 
