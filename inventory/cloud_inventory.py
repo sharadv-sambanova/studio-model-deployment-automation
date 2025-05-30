@@ -40,7 +40,7 @@ def get_cloud_configs(inference_deployments):
 
 def write_inventory(configs: Dict[InventoryKey, CloudConfig]):
     with open(OUTPUT_FILE, "w") as f:
-        writer = csv.DictWriter(f, fieldnames=CloudConfig.fieldnames)
+        writer = csv.DictWriter(f, fieldnames=CloudConfig.fieldnames, quoting=csv.QUOTE_MINIMAL)
         writer.writeheader()
         sorted_keys = sorted(configs.keys(), key=lambda x: str(x))
         for key in sorted_keys:
@@ -51,7 +51,7 @@ def write_inventory(configs: Dict[InventoryKey, CloudConfig]):
 
 def write_inventory_gtm(configs: Dict[InventoryKey, CloudConfig]):
     with open(GTM_OUTPUT_FILE, "w") as f:
-        writer = csv.DictWriter(f, fieldnames=CloudConfig.gtm_fieldnames)
+        writer = csv.DictWriter(f, fieldnames=CloudConfig.gtm_fieldnames, quoting=csv.QUOTE_MINIMAL)
         writer.writeheader()
         sorted_keys = sorted(configs.keys(), key=lambda x: str(x))
         rows = []
