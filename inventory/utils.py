@@ -49,7 +49,7 @@ def lookup_seq_len(expert_name: str) -> int:
     """Lookup the seq len for an expert in the cloud helm chart"""
     for model_name, model in CLOUD_MODELS.items():
         try:
-            if model_name == expert_name or expert_name in model["aliases"]:
+            if model_name == expert_name or expert_name in model.get("aliases", {}):
                 # CLOUD_MODELS format:
                 #   <model name>:
                     #   aliases:
@@ -62,6 +62,7 @@ def lookup_seq_len(expert_name: str) -> int:
                 return backend_model["maxSequenceLength"]
         except KeyError as e:
             return 4096
+    return 4096
 
 
 def get_expert_seq_len(expert_name: str) -> int:
@@ -69,12 +70,16 @@ def get_expert_seq_len(expert_name: str) -> int:
     # match '-<digits>k' at the end of the expert name
     seq_len = None
     match = re.search(r'-(\d+)k$', expert_name)
-    if match:
+
+    if expert_name == "Llama-4-Maverick-17B-128E-Instruct-Text": # Hack to handle just this expert
+        seq_len = "8k"
+    elif match:
         # discard the '-'
         seq_len = match.group()[1:]
     # If no seq len specified in expert name, lookup in values.yaml
     else:
         seq_len = lookup_seq_len(expert_name)
+
     return convert_seq_len(seq_len, int)
 
 
@@ -92,6 +97,8 @@ def get_pef_jira(pef_path: str) -> str:
 
 def normalize_expert_name(expert_name) -> str:
     """Remove the trailing sequence length marker from an expert name"""
+    if expert_name == "Llama-4-Maverick-17B-128E-Instruct-Text": # Hack to handle just this expert
+        return "Llama-4-Maverick-17B-128E-Instruct"
     if re.search(r'-(\d+)k$', expert_name):
         return "-".join(expert_name.split("-")[:-1])
     else:
