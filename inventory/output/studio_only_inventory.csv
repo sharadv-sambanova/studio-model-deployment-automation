@@ -1,5 +1,4 @@
 id,group_id,model_app_name,param_count,max_seq_length,spec_decoding,batch_sizes
-Samba1_Embedding_Experts-7b-False-4096,Samba1_Embedding_Experts-7b-False,Samba1 Embedding Experts,7b,4096,False,"[1, 4, 8, 16, 32]"
 Samba1_Embedding_Experts-7b-False-8192,Samba1_Embedding_Experts-7b-False,Samba1 Embedding Experts,7b,8192,False,"[1, 4, 8, 16, 32]"
 Samba1_Llama3d1_Experts-70b-False-131072,Samba1_Llama3d1_Experts-70b-False,Samba1 Llama3.1 Experts,70b,131072,False,"[1, 2]"
 Samba1_Llama3d1_Experts-70b-False-32768,Samba1_Llama3d1_Experts-70b-False,Samba1 Llama3.1 Experts,70b,32768,False,[1]
@@ -16,6 +15,7 @@ Samba1_Llama3d3_Experts-70b-False-8192,Samba1_Llama3d3_Experts-70b-False,Samba1 
 Samba1_Mistral_Experts-123b-False-4096,Samba1_Mistral_Experts-123b-False,Samba1 Mistral Experts,123b,4096,False,"[2, 4, 8, 16]"
 Samba1_Mistral_Experts-123b-False-8192,Samba1_Mistral_Experts-123b-False,Samba1 Mistral Experts,123b,8192,False,"[1, 2, 4, 8, 16]"
 Samba1_Mistral_Experts-7b-False-16384,Samba1_Mistral_Experts-7b-False,Samba1 Mistral Experts,7b,16384,False,"[1, 2, 4, 8, 16]"
+Samba1_Mistral_Experts-7b-False-4096,Samba1_Mistral_Experts-7b-False,Samba1 Mistral Experts,7b,4096,False,"[1, 2, 4, 8, 16]"
 Samba1_Mistral_Experts-7b-False-8192,Samba1_Mistral_Experts-7b-False,Samba1 Mistral Experts,7b,8192,False,"[1, 2, 4, 8, 16]"
 Samba1_Mistral_Experts-8x22b-False-4096,Samba1_Mistral_Experts-8x22b-False,Samba1 Mistral Experts,8x22b,4096,False,"[1, 16]"
 Samba1_Qwen2d5_Experts-7b-False-8192,Samba1_Qwen2d5_Experts-7b-False,Samba1 Qwen2.5 Experts,7b,8192,False,"[1, 2, 4, 8, 16]"

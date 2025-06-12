@@ -6,7 +6,7 @@
 
 Llama-4-Maverick-17B-128E-Instruct:
   app_name: Samba1 Llama4 Experts
-  model_parameter_count: 17b
+  model_parameter_count: 128x17b
 
 Maitai-Popeyes-Wait-V1:
   app_name: Maitai
@@ -60,6 +60,18 @@ Maitai-Evaluation:
   app_name: Maitai
   model_parameter_count: null
 
+Maitai-Email-V2-Default:
+  app_name: Maitai
+  model_parameter_count: null
+
+Maitai-Normal-V1:
+  app_name: Maitai
+  model_parameter_count: null
+
+Maitai-Qualification-Mixed:
+  app_name: Maitai
+  model_parameter_count: null
+
 DeepSeek-R1:
   app_name: Samba1 DeepSeek Experts
   model_parameter_count: 671b
@@ -109,7 +121,7 @@ Llama-3.1-Swallow-8B-Instruct-v0.3:
   model_parameter_count: 8b
 
 E5-Mistral-7B-Instruct:
-  app_name: Samba1 Mistral Experts
+  app_name: Samba1 Embedding Experts
   model_parameter_count: 7b
 
 QwQ-32B:
@@ -133,8 +145,8 @@ Meta-Llama-3.1-8B-Instruct:
   model_parameter_count: 8b
 
 Llama-4-Scout-17B-16E-Instruct:
-  app_name: Llama 4 Scout
-  model_parameter_count: 17b
+  app_name: Samba1 Llama4 Experts
+  model_parameter_count: 16x17b
 
 DeepSeek-R1-Distill-Llama-70B:
   app_name: Samba1 Llama3.3 Experts

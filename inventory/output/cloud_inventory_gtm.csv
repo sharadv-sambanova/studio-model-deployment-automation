@@ -1,4 +1,5 @@
 model_name,rdu_arch,model_parallel_rdus,spec_decoding,mode,max_seq_length,batch_sizes
+DeepSeek-R1-0528,sn40-16,16,False,infer,4096,[4]
 DeepSeek-R1-0528,sn40-16,16,False,infer,8192,[1]
 DeepSeek-R1-0528,sn40-16,16,False,infer,16384,[1]
 DeepSeek-R1-0528,sn40-16,16,False,infer,32768,[1]
@@ -90,7 +91,9 @@ Qwen2.5-Coder-0.5B-Instruct,sn40-16,16,False,infer,16384,[1]
 Qwen2.5-Coder-32B-Instruct,sn40-16,16,True,infer,4096,"[1, 2, 4]"
 Qwen2.5-Coder-32B-Instruct,sn40-16,16,True,infer,8192,"[1, 2, 4]"
 Qwen2.5-Coder-32B-Instruct,sn40-16,16,True,infer,16384,[1]
-Qwen3-32B,sn40-16,16,False,infer,8192,[1]
+Qwen3-32B,sn40-16,16,False,infer,8192,"[1, 4]"
+Qwen3-32B,sn40-16,16,False,infer,16384,[1]
+Qwen3-32B,sn40-16,16,False,infer,32768,[1]
 Swallow-1B-Draft,sn40-16,16,False,infer,4096,"[1, 2, 4, 8, 16, 32]"
 Swallow-1B-Draft,sn40-16,16,False,infer,8192,"[1, 2, 4, 8, 16]"
 Swallow-1B-Draft,sn40-16,16,False,infer,16384,"[1, 2, 4, 8]"

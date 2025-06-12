@@ -338,6 +338,10 @@ gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF-3
 : md5: a3fe4d1f7489fbc18b953db24cd37e35
   path: gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/e5-mistral-7b/4096/bs16/coe_pef/ts__e5mistral7binstruct_enc_32_ss_1024__4096_bs_16_modelbox_functionality_test_hwlbl_use_chkpt_sharing_tp16_variation_2.pef
   upload_date: Tue, 18 Mar 2025 18:15:11 GMT
+? gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/e5-mistral-7b/4096/bs32/coe_pef/ts__e5mistral7binstruct_enc_32_ss_1024__4096_bs_32_modelbox_functionality_test_hwlbl_use_chkpt_sharing_tp16_variation_3.pef
+: md5: fbb0e68eb87621cb1f556db4e06ae2fb
+  path: gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/e5-mistral-7b/4096/bs32/coe_pef/ts__e5mistral7binstruct_enc_32_ss_1024__4096_bs_32_modelbox_functionality_test_hwlbl_use_chkpt_sharing_tp16_variation_3.pef
+  upload_date: Tue, 18 Mar 2025 18:15:11 GMT
 ? gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/e5-mistral-7b/4096/bs4/coe_pef/ts__e5mistral7binstruct_enc_32_ss_1024__4096_bs_4_modelbox_functionality_test_hwlbl_use_chkpt_sharing_tp16_variation_0.pef
 : md5: fb366388944f47ea052ce5f7bbd85712
   path: gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/e5-mistral-7b/4096/bs4/coe_pef/ts__e5mistral7binstruct_enc_32_ss_1024__4096_bs_4_modelbox_functionality_test_hwlbl_use_chkpt_sharing_tp16_variation_0.pef
@@ -534,6 +538,30 @@ sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_1_Llama3_1_Experts/llama3p1_7
   md5: c8c77fe3c4bc91698155450d1708b6ad
   path: sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_1_Llama3_1_Experts/llama3p1_70b_ss4k_tp16_cloud_2/bs8/coe_pef/Llama3dot1_70B_TP16_ss4096_token_gen_seq_length6_CoE_ckpt_sharing_BS8_SS256_512_1152_2048_4096.pef
   upload_date: '2024-11-14T12:40:34.705-08:00'
+sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_1_Llama3_1_Experts/llama3p1_70b_ss4k_tp16_high_bs/bs1/coe_pef/:
+  md5: b38a13557047789c31b2a9adea1c0bb3
+  path: sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_1_Llama3_1_Experts/llama3p1_70b_ss4k_tp16_high_bs/bs1/coe_pef/Llama3dot1_70B_TP16_ss4096_token_gen_seq_length6_CoE_ckpt_sharing_BS1_SS256_512_1152_2048_4096.pef
+  upload_date: '2024-11-14T12:45:23.348-08:00'
+sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_1_Llama3_1_Experts/llama3p1_70b_ss4k_tp16_high_bs/bs32/coe_pef/:
+  md5: 47df7e77cd1ef7b8ad877f1b4dbb2895
+  path: sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_1_Llama3_1_Experts/llama3p1_70b_ss4k_tp16_high_bs/bs32/coe_pef/Llama3dot1_70B_TP16_ss4096_token_gen_seq_length6_CoE_ckpt_sharing_BS32_SS256_512_1152_2048_4096.pef
+  upload_date: '2024-11-14T12:43:06.753-08:00'
+sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_1_Llama3_1_Experts/llama3p1_70b_ss4k_tp16_high_bs/bs8/coe_pef/:
+  md5: c8c77fe3c4bc91698155450d1708b6ad
+  path: sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_1_Llama3_1_Experts/llama3p1_70b_ss4k_tp16_high_bs/bs8/coe_pef/Llama3dot1_70B_TP16_ss4096_token_gen_seq_length6_CoE_ckpt_sharing_BS8_SS256_512_1152_2048_4096.pef
+  upload_date: '2024-11-14T12:40:34.705-08:00'
+sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_1_Llama3_1_Experts/llama3p1_70b_ss8k_tp16_cloud/bs1/coe_pef/:
+  md5: d62c13cad21a9e0f76bfd21f015c3e3f
+  path: sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_1_Llama3_1_Experts/llama3p1_70b_ss8k_tp16_cloud/bs1/coe_pef/Llama3dot1_70B_TP16_ss4096_token_gen_seq_length6_CoE_ckpt_sharing_BS1_SS4096_6400_8192.pef
+  upload_date: '2024-11-14T12:51:38.440-08:00'
+sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_1_Llama3_1_Experts/llama3p1_70b_ss8k_tp16_cloud/bs2/coe_pef/:
+  md5: cce9c310fe13a25cb765595abc0517ae
+  path: sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_1_Llama3_1_Experts/llama3p1_70b_ss8k_tp16_cloud/bs2/coe_pef/Llama3dot1_70B_TP16_ss4096_token_gen_seq_length6_CoE_ckpt_sharing_BS2_SS4096_6400_8192.pef
+  upload_date: '2024-11-14T12:50:14.731-08:00'
+sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_1_Llama3_1_Experts/llama3p1_70b_ss8k_tp16_cloud/bs4/coe_pef/:
+  md5: 9e621c4b88c97f08a363e05c7d751984
+  path: sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_1_Llama3_1_Experts/llama3p1_70b_ss8k_tp16_cloud/bs4/coe_pef/Llama3dot1_70B_TP16_ss4096_token_gen_seq_length6_CoE_ckpt_sharing_BS4_SS4096_6400_8192.pef
+  upload_date: '2024-11-14T12:49:25.209-08:00'
 sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_1_Llama3_1_Experts/llama3p1_70b_ss8k_tp16_cloud_2/bs1/coe_pef/:
   md5: d62c13cad21a9e0f76bfd21f015c3e3f
   path: sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_1_Llama3_1_Experts/llama3p1_70b_ss8k_tp16_cloud_2/bs1/coe_pef/Llama3dot1_70B_TP16_ss4096_token_gen_seq_length6_CoE_ckpt_sharing_BS1_SS4096_6400_8192.pef
@@ -798,3 +826,23 @@ sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_Llama3.2_Experts/LLAMA3_1B_SS
   md5: 5cf5d10d472508f46c532526734f371b
   path: sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_Llama3.2_Experts/LLAMA3_1B_SS64K_TP16_v2/bs1/coe_pef/Llama3_2_1B_TP16_ss4096_16384_32768_65536_qs1_voc128256_balanced_inference_reset_buffers_loadv2_sdpa_decode_CoE_ckpt_sharing_BS1_SS4096_16384_32768_65536.pef
   upload_date: '2025-05-12T16:14:09.324-07:00'
+sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_Turbo_Experts/M3/TP-PEF-M3-16-TS16/bs1/coe_pef/:
+  md5: c98a428de279026617516820656217b3
+  path: sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_Turbo_Experts/M3/TP-PEF-M3-16-TS16/bs1/coe_pef/ts__e5mistral7binstruct_enc_32_ss_1024__8192_bs_1_modelbox_functionality_test_hwlbl_use_chkpt_sharing_tp16_variation_5.pef
+  upload_date: '2024-09-24T03:40:29.561-07:00'
+sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_Turbo_Experts/M3/TP-PEF-M3-16-TS16/bs16/coe_pef/:
+  md5: 576cd0da0e103a289f868bb08a3874d2
+  path: sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_Turbo_Experts/M3/TP-PEF-M3-16-TS16/bs16/coe_pef/ts__e5mistral7binstruct_enc_32_ss_1024__8192_bs_16_modelbox_functionality_test_hwlbl_use_chkpt_sharing_tp16_variation_8.pef
+  upload_date: '2024-09-24T03:40:00.811-07:00'
+sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_Turbo_Experts/M3/TP-PEF-M3-16-TS16/bs32/coe_pef/:
+  md5: e7f7e95d98f470b793d60b7e23fc2e27
+  path: sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_Turbo_Experts/M3/TP-PEF-M3-16-TS16/bs32/coe_pef/ts__e5mistral7binstruct_enc_32_ss_1024__8192_bs_32_modelbox_functionality_test_hwlbl_use_chkpt_sharing_tp16_variation_9.pef
+  upload_date: '2024-09-24T03:39:41.695-07:00'
+sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_Turbo_Experts/M3/TP-PEF-M3-16-TS16/bs4/coe_pef/:
+  md5: ecadd4bf65a1d288c0b858b625c63ca4
+  path: sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_Turbo_Experts/M3/TP-PEF-M3-16-TS16/bs4/coe_pef/ts__e5mistral7binstruct_enc_32_ss_1024__8192_bs_4_modelbox_functionality_test_hwlbl_use_chkpt_sharing_tp16_variation_6.pef
+  upload_date: '2024-09-24T03:39:25.060-07:00'
+sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_Turbo_Experts/M3/TP-PEF-M3-16-TS16/bs8/coe_pef/:
+  md5: c467ea684b4f5b3b4b0d0e9c181d7b3a
+  path: sw-generic-daas-artifacts-dev/modelbox/pefs/Samba1_Turbo_Experts/M3/TP-PEF-M3-16-TS16/bs8/coe_pef/ts__e5mistral7binstruct_enc_32_ss_1024__8192_bs_8_modelbox_functionality_test_hwlbl_use_chkpt_sharing_tp16_variation_7.pef
+  upload_date: '2024-09-24T03:39:06.435-07:00'
