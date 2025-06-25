@@ -2,19 +2,23 @@ import yaml
 import os
 from schemas import InferenceDeployment, CloudConfig, InventoryKey
 import csv
-from utils import CLOUD_PROD_DEPLOYMENTS
+from utils import CLOUD_PROD_DEPLOYMENTS, SN_IAC_PROD_CLUSTER_FILES
 from pathlib import Path
 from typing import Dict
+from itertools import takewhile
 
 OUTPUT_FILE = Path(__file__).parent / "output/cloud_inventory.csv"
 GTM_OUTPUT_FILE = Path(__file__).parent / "output/cloud_inventory_gtm.csv"
 
 
-def load_deployments():
+def load_deployments(active_deployments):
     deployment_configs = [CLOUD_PROD_DEPLOYMENTS / f for f in os.listdir(CLOUD_PROD_DEPLOYMENTS)]
     deployments = {}
     inference_deployments = {}
     for config in deployment_configs:
+        # Only parse active deployments
+        if config.stem not in active_deployments:
+            continue
         with open(config) as f:
             deployment = yaml.safe_load(f)
             deployments[config] = deployment
@@ -24,6 +28,32 @@ def load_deployments():
         inference_deployments[config.stem] = d
 
     return inference_deployments
+
+def get_active_deployments():
+
+    def read_coe_values_from_cluster_spec(cluster_spec):
+        yaml_content = ""
+        line = cluster_spec.readline()
+        # Skip to the beginning of the coe-values.yaml definition
+        while not "EOVAL" in line:
+            line = cluster_spec.readline()
+        # Read the first line of the yaml definition
+        line = cluster_spec.readline()
+        # Yaml is indented in the .tfvars file, need to unindent it
+        indent = len(''.join(takewhile(str.isspace, line)))
+        while not "EOVAL" in line:
+            yaml_content += line[indent:]
+            line = cluster_spec.readline()
+        return yaml.safe_load(yaml_content)
+
+    active_deployments = set()
+    for cluster_file in SN_IAC_PROD_CLUSTER_FILES:
+        with open(cluster_file) as f:
+            coe_values = read_coe_values_from_cluster_spec(f)
+        cluster_deployments = [d["name"] for d in coe_values['inferenceDeploymentSpecs']]
+        active_deployments = active_deployments.union(cluster_deployments)
+
+    return active_deployments
 
 
 def get_cloud_configs(inference_deployments):
@@ -62,7 +92,8 @@ def write_inventory_gtm(configs: Dict[InventoryKey, CloudConfig]):
 
 
 if __name__ == "__main__":
-    deployments = load_deployments()
+    active_deployments = get_active_deployments()
+    deployments = load_deployments(active_deployments)
     configs = get_cloud_configs(deployments)
     write_inventory(configs)
     write_inventory_gtm(configs)

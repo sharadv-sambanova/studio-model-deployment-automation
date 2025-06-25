@@ -5,6 +5,16 @@ from typing import Union, Dict
 
 DAAS_RELEASE_ROOT = Path(__file__).parent.parent.parent / "daas-release"
 FAST_COE_ROOT = Path(__file__).parent.parent.parent / "fast-coe"
+SN_IAC_ROOT = Path(__file__).parent.parent.parent / "sn_iac"
+
+SN_IAC_PROD = SN_IAC_ROOT / "environments" / "production" / "terraform" / "modules" / "sn_vcluster_tenant_v2" / "tfvars"
+SN_IAC_PROD_CLUSTER_FILES = [SN_IAC_PROD / f"{cluster_name}.tfvars" for cluster_name in 
+    [
+        "fast-snova-ai-jp-prod-2",
+        "fast-snova-ai-prod-0",
+        "fast-snova-ai-prod-1",
+    ]
+]
 
 STUDIO_INVENTORY_PATH= DAAS_RELEASE_ROOT / "inventory/inventory_output/prod/models_and_pefs_gtm.csv"
 CLOUD_MODELS_YAML = FAST_COE_ROOT / "helm/values.yaml"
