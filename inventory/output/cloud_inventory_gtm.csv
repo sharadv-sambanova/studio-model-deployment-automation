@@ -3,7 +3,6 @@ DeepSeek-R1-0528,sn40-16,16,False,infer,4096,[4]
 DeepSeek-R1-0528,sn40-16,16,False,infer,8192,[1]
 DeepSeek-R1-0528,sn40-16,16,False,infer,16384,[1]
 DeepSeek-R1-0528,sn40-16,16,False,infer,32768,[1]
-DeepSeek-R1-Distill-Llama-70B,sn40-16,16,False,infer,32768,[1]
 DeepSeek-R1-Distill-Llama-70B,sn40-16,16,True,infer,4096,"[1, 2, 4, 8, 16, 32]"
 DeepSeek-R1-Distill-Llama-70B,sn40-16,16,True,infer,8192,"[1, 2, 4, 8]"
 DeepSeek-R1-Distill-Llama-70B,sn40-16,16,True,infer,16384,"[1, 2, 4]"
@@ -15,18 +14,9 @@ DeepSeek-V3-0324,sn40-16,16,False,infer,8192,[1]
 DeepSeek-V3-0324,sn40-16,16,False,infer,16384,[1]
 DeepSeek-V3-0324,sn40-16,16,False,infer,32768,[1]
 E5-Mistral-7B-Instruct,sn40-16,16,False,infer,4096,"[1, 4, 8, 16, 32]"
-Llama-3.1-Swallow-70B-Instruct-v0.3,sn40-16,16,True,infer,4096,"[1, 2, 4, 8, 16, 32]"
-Llama-3.1-Swallow-70B-Instruct-v0.3,sn40-16,16,True,infer,8192,"[1, 2, 4, 8, 16]"
-Llama-3.1-Swallow-70B-Instruct-v0.3,sn40-16,16,True,infer,16384,"[1, 2, 4]"
 Llama-3.1-Swallow-8B-Instruct-v0.3,sn40-16,16,False,infer,4096,"[1, 2, 4, 8, 16]"
 Llama-3.1-Swallow-8B-Instruct-v0.3,sn40-16,16,False,infer,8192,"[1, 2, 4, 8, 16]"
 Llama-3.1-Swallow-8B-Instruct-v0.3,sn40-16,16,False,infer,16384,"[1, 2, 4]"
-Llama-3.1-Tulu-3-405B,sn40-16,16,True,infer,4096,"[1, 2, 4]"
-Llama-3.1-Tulu-3-405B,sn40-16,16,True,infer,8192,[1]
-Llama-3.1-Tulu-3-405B,sn40-16,16,True,infer,16384,[1]
-Llama-3.1-Tulu-3-8B,sn40-16,16,False,infer,4096,"[1, 2, 4, 8, 16]"
-Llama-3.1-Tulu-3-8B,sn40-16,16,False,infer,8192,"[1, 2, 4, 8, 16]"
-Llama-3.1-Tulu-3-8B,sn40-16,16,False,infer,16384,"[1, 2, 4]"
 Llama-3.3-Swallow-70B-Instruct-v0.4,sn40-16,16,True,infer,4096,"[1, 2, 4, 8, 16, 32]"
 Llama-3.3-Swallow-70B-Instruct-v0.4,sn40-16,16,True,infer,8192,"[1, 2, 4, 8]"
 Llama-3.3-Swallow-70B-Instruct-v0.4,sn40-16,16,True,infer,16384,"[1, 2, 4]"
@@ -41,23 +31,17 @@ Llama-4-Scout-17B-16E-Instruct,sn40-16,16,False,infer,8192,[1]
 Meta-Llama-3.1-405B-Instruct,sn40-16,16,True,infer,4096,"[1, 2, 4]"
 Meta-Llama-3.1-405B-Instruct,sn40-16,16,True,infer,8192,[1]
 Meta-Llama-3.1-405B-Instruct,sn40-16,16,True,infer,16384,[1]
-Meta-Llama-3.1-70B-Instruct,sn40-16,16,True,infer,4096,"[1, 2, 4, 8, 16, 32]"
-Meta-Llama-3.1-70B-Instruct,sn40-16,16,True,infer,8192,"[1, 2, 4, 8, 16]"
-Meta-Llama-3.1-70B-Instruct,sn40-16,16,True,infer,16384,"[1, 2, 4]"
-Meta-Llama-3.1-70B-Instruct,sn40-16,16,True,infer,32768,"[1, 4]"
-Meta-Llama-3.1-70B-Instruct,sn40-16,16,True,infer,65536,[1]
-Meta-Llama-3.1-70B-Instruct,sn40-16,16,True,infer,131072,[1]
 Meta-Llama-3.1-8B-Instruct,sn40-16,16,False,infer,4096,"[1, 2, 4, 8, 16]"
 Meta-Llama-3.1-8B-Instruct,sn40-16,16,False,infer,8192,"[1, 2, 4, 8, 16]"
 Meta-Llama-3.1-8B-Instruct,sn40-16,16,False,infer,16384,"[1, 2, 4]"
 Meta-Llama-3.2-1B-Distill-Instruct,sn40-16,16,False,infer,4096,"[1, 2, 4, 8, 16, 32]"
-Meta-Llama-3.2-1B-Distill-Instruct,sn40-16,16,False,infer,8192,"[1, 2, 4, 8, 16]"
+Meta-Llama-3.2-1B-Distill-Instruct,sn40-16,16,False,infer,8192,"[1, 2, 4, 8]"
 Meta-Llama-3.2-1B-Distill-Instruct,sn40-16,16,False,infer,16384,"[1, 2, 4, 8]"
 Meta-Llama-3.2-1B-Distill-Instruct,sn40-16,16,False,infer,32768,"[1, 2, 4]"
 Meta-Llama-3.2-1B-Distill-Instruct,sn40-16,16,False,infer,65536,[1]
 Meta-Llama-3.2-1B-Distill-Instruct,sn40-16,16,False,infer,131072,[1]
 Meta-Llama-3.2-1B-Instruct,sn40-16,16,False,infer,4096,"[1, 2, 4, 8, 16, 32]"
-Meta-Llama-3.2-1B-Instruct,sn40-16,16,False,infer,8192,"[1, 2, 4, 8, 16]"
+Meta-Llama-3.2-1B-Instruct,sn40-16,16,False,infer,8192,"[1, 2, 4, 8]"
 Meta-Llama-3.2-1B-Instruct,sn40-16,16,False,infer,16384,"[1, 2, 4, 8]"
 Meta-Llama-3.2-1B-Instruct,sn40-16,16,False,infer,32768,"[1, 2, 4]"
 Meta-Llama-3.2-1B-Instruct,sn40-16,16,False,infer,65536,[1]
@@ -76,26 +60,14 @@ QwQ-32B,sn40-16,16,True,infer,4096,"[1, 2, 4]"
 QwQ-32B,sn40-16,16,True,infer,8192,"[1, 2, 4]"
 QwQ-32B,sn40-16,16,True,infer,16384,[1]
 Qwen2-Audio-7B-Instruct,sn40-16,16,False,infer,4096,[1]
-Qwen2.5-0.5B-Instruct,sn40-16,16,False,infer,4096,"[1, 2, 4]"
-Qwen2.5-0.5B-Instruct,sn40-16,16,False,infer,8192,"[1, 2, 4]"
-Qwen2.5-0.5B-Instruct,sn40-16,16,False,infer,16384,[1]
 Qwen2.5-0.5B-SFT-Instruct,sn40-16,16,False,infer,4096,"[1, 2, 4]"
 Qwen2.5-0.5B-SFT-Instruct,sn40-16,16,False,infer,8192,"[1, 2, 4]"
 Qwen2.5-0.5B-SFT-Instruct,sn40-16,16,False,infer,16384,[1]
-Qwen2.5-72B-Instruct,sn40-16,16,True,infer,4096,"[1, 2, 4]"
-Qwen2.5-72B-Instruct,sn40-16,16,True,infer,8192,"[1, 2]"
-Qwen2.5-72B-Instruct,sn40-16,16,True,infer,16384,[1]
-Qwen2.5-Coder-0.5B-Instruct,sn40-16,16,False,infer,4096,"[1, 2, 4]"
-Qwen2.5-Coder-0.5B-Instruct,sn40-16,16,False,infer,8192,"[1, 2, 4]"
-Qwen2.5-Coder-0.5B-Instruct,sn40-16,16,False,infer,16384,[1]
-Qwen2.5-Coder-32B-Instruct,sn40-16,16,True,infer,4096,"[1, 2, 4]"
-Qwen2.5-Coder-32B-Instruct,sn40-16,16,True,infer,8192,"[1, 2, 4]"
-Qwen2.5-Coder-32B-Instruct,sn40-16,16,True,infer,16384,[1]
 Qwen3-32B,sn40-16,16,False,infer,8192,"[1, 4]"
 Qwen3-32B,sn40-16,16,False,infer,16384,[1]
 Qwen3-32B,sn40-16,16,False,infer,32768,[1]
 Swallow-1B-Draft,sn40-16,16,False,infer,4096,"[1, 2, 4, 8, 16, 32]"
-Swallow-1B-Draft,sn40-16,16,False,infer,8192,"[1, 2, 4, 8, 16]"
+Swallow-1B-Draft,sn40-16,16,False,infer,8192,"[1, 2, 4, 8]"
 Swallow-1B-Draft,sn40-16,16,False,infer,16384,"[1, 2, 4, 8]"
 Swallow-1B-Draft,sn40-16,16,False,infer,32768,"[1, 2, 4]"
 Swallow-1B-Draft,sn40-16,16,False,infer,65536,[1]
