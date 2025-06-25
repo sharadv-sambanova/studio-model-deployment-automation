@@ -16,11 +16,11 @@ def load_deployments(active_deployments):
     deployments = {}
     inference_deployments = {}
     for config in deployment_configs:
-        # Only parse active deployments
-        if config.stem not in active_deployments:
-            continue
         with open(config) as f:
             deployment = yaml.safe_load(f)
+            # Only parse active deployments
+            if deployment["metadata"]["name"] not in active_deployments:
+                continue
             deployments[config] = deployment
     for config, deployment in deployments.items():
         print(f"Processing {config}")
@@ -52,7 +52,7 @@ def get_active_deployments():
             coe_values = read_coe_values_from_cluster_spec(f)
         cluster_deployments = [d["name"] for d in coe_values['inferenceDeploymentSpecs']]
         active_deployments = active_deployments.union(cluster_deployments)
-
+        
     return active_deployments
 
 
