@@ -5,10 +5,17 @@ Samba1_Llama3d1_Experts-70b-False-32768,Samba1_Llama3d1_Experts-70b-False,Samba1
 Samba1_Llama3d1_Experts-70b-False-4096,Samba1_Llama3d1_Experts-70b-False,Samba1 Llama3.1 Experts,70b,4096,False,"[1, 4, 8, 16]"
 Samba1_Llama3d1_Experts-70b-False-65536,Samba1_Llama3d1_Experts-70b-False,Samba1 Llama3.1 Experts,70b,65536,False,"[1, 2, 4]"
 Samba1_Llama3d1_Experts-70b-False-8192,Samba1_Llama3d1_Experts-70b-False,Samba1 Llama3.1 Experts,70b,8192,False,"[1, 4, 8, 16, 32]"
+Samba1_Llama3d1_Experts-70b-True-131072,Samba1_Llama3d1_Experts-70b-True,Samba1 Llama3.1 Experts,70b,131072,True,[1]
+Samba1_Llama3d1_Experts-70b-True-16384,Samba1_Llama3d1_Experts-70b-True,Samba1 Llama3.1 Experts,70b,16384,True,"[1, 2, 4]"
+Samba1_Llama3d1_Experts-70b-True-32768,Samba1_Llama3d1_Experts-70b-True,Samba1 Llama3.1 Experts,70b,32768,True,"[1, 2, 4]"
+Samba1_Llama3d1_Experts-70b-True-4096,Samba1_Llama3d1_Experts-70b-True,Samba1 Llama3.1 Experts,70b,4096,True,"[1, 2, 4, 8, 16, 32]"
+Samba1_Llama3d1_Experts-70b-True-65536,Samba1_Llama3d1_Experts-70b-True,Samba1 Llama3.1 Experts,70b,65536,True,[1]
+Samba1_Llama3d1_Experts-70b-True-8192,Samba1_Llama3d1_Experts-70b-True,Samba1 Llama3.1 Experts,70b,8192,True,"[1, 2, 4, 8, 16]"
 Samba1_Llama3d2_Experts-3b-surgery-False-16384,Samba1_Llama3d2_Experts-3b-surgery-False,Samba1 Llama3.2 Experts,3b-surgery,16384,False,"[1, 2, 4]"
 Samba1_Llama3d2_Vision_Experts-11b-False-4096,Samba1_Llama3d2_Vision_Experts-11b-False,Samba1 Llama3.2 Vision Experts,11b,4096,False,"[1, 4]"
 Samba1_Llama3d2_Vision_Experts-90b-False-4096,Samba1_Llama3d2_Vision_Experts-90b-False,Samba1 Llama3.2 Vision Experts,90b,4096,False,[1]
 Samba1_Llama3d3_Experts-70b-False-131072,Samba1_Llama3d3_Experts-70b-False,Samba1 Llama3.3 Experts,70b,131072,False,"[1, 2]"
+Samba1_Llama3d3_Experts-70b-False-32768,Samba1_Llama3d3_Experts-70b-False,Samba1 Llama3.3 Experts,70b,32768,False,[1]
 Samba1_Llama3d3_Experts-70b-False-4096,Samba1_Llama3d3_Experts-70b-False,Samba1 Llama3.3 Experts,70b,4096,False,"[1, 4, 8, 16]"
 Samba1_Llama3d3_Experts-70b-False-65536,Samba1_Llama3d3_Experts-70b-False,Samba1 Llama3.3 Experts,70b,65536,False,"[1, 2, 4]"
 Samba1_Llama3d3_Experts-70b-False-8192,Samba1_Llama3d3_Experts-70b-False,Samba1 Llama3.3 Experts,70b,8192,False,"[1, 4, 8, 16, 32]"
@@ -18,5 +25,9 @@ Samba1_Mistral_Experts-7b-False-16384,Samba1_Mistral_Experts-7b-False,Samba1 Mis
 Samba1_Mistral_Experts-7b-False-4096,Samba1_Mistral_Experts-7b-False,Samba1 Mistral Experts,7b,4096,False,"[1, 2, 4, 8, 16]"
 Samba1_Mistral_Experts-7b-False-8192,Samba1_Mistral_Experts-7b-False,Samba1 Mistral Experts,7b,8192,False,"[1, 2, 4, 8, 16]"
 Samba1_Mistral_Experts-8x22b-False-4096,Samba1_Mistral_Experts-8x22b-False,Samba1 Mistral Experts,8x22b,4096,False,"[1, 16]"
+Samba1_Qwen2d5_Experts-32b-True-16384,Samba1_Qwen2d5_Experts-32b-True,Samba1 Qwen2.5 Experts,32b,16384,True,"[1, 2, 4]"
+Samba1_Qwen2d5_Experts-32b-True-4096,Samba1_Qwen2d5_Experts-32b-True,Samba1 Qwen2.5 Experts,32b,4096,True,"[1, 2, 4]"
+Samba1_Qwen2d5_Experts-32b-True-8192,Samba1_Qwen2d5_Experts-32b-True,Samba1 Qwen2.5 Experts,32b,8192,True,"[1, 2, 4]"
+Samba1_Qwen2d5_Experts-72b-True-4096,Samba1_Qwen2d5_Experts-72b-True,Samba1 Qwen2.5 Experts,72b,4096,True,"[1, 4, 8]"
 Samba1_Qwen2d5_Experts-7b-False-8192,Samba1_Qwen2d5_Experts-7b-False,Samba1 Qwen2.5 Experts,7b,8192,False,"[1, 2, 4, 8, 16]"
 Samba1_Stormer_Experts-469m-False-8192,Samba1_Stormer_Experts-469m-False,Samba1 Stormer Experts,469m,8192,False,[1]
