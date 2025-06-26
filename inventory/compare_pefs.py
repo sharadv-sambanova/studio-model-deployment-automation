@@ -11,10 +11,13 @@ from typing import Dict, List
 
 
 CACHE_FILE = Path(__file__).parent / ".md5sum_cache.yaml"
-with open(CACHE_FILE) as f:
-    CACHE = yaml.safe_load(f)
-    if CACHE is None:
-        CACHE = {}
+if os.path.isfile(CACHE_FILE):
+    with open(CACHE_FILE) as f:
+        CACHE = yaml.safe_load(f)
+        if CACHE is None:
+            CACHE = {}
+else:
+    CACHE = {}
 
 def write_cache():
     print("Writing cache...", end=" ")
