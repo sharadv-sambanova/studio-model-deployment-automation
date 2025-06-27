@@ -27,6 +27,7 @@ Llama-4-Maverick-17B-128E-Instruct,sn40-16,16,False,infer,8192,[1]
 Llama-4-Maverick-17B-128E-Instruct,sn40-16,16,False,infer,16384,[1]
 Llama-4-Maverick-17B-128E-Instruct,sn40-16,16,False,infer,65536,[1]
 Llama-4-Maverick-17B-128E-Instruct,sn40-16,16,False,infer,131072,[1]
+Meta-Llama-3.1-405B-Instruct,sn40-16,16,True,infer,4096,"[1, 2, 4]"
 Meta-Llama-3.1-8B-Instruct,sn40-16,16,False,infer,4096,"[1, 2, 4, 8, 16]"
 Meta-Llama-3.1-8B-Instruct,sn40-16,16,False,infer,8192,"[1, 2, 4, 8, 16]"
 Meta-Llama-3.1-8B-Instruct,sn40-16,16,False,infer,16384,"[1, 2, 4]"
