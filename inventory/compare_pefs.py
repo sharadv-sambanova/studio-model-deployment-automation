@@ -70,7 +70,7 @@ def get_studio_pef_metadata(pef_path: str):
 
     command = f"jf rt s {pef_path}"
 
-    output = subprocess.run(command.split(), capture_output=True, text=True)
+    output = subprocess.run(command, shell=True, capture_output=True, text=True)
     assert output.returncode == 0, f"Got bad returncode for '{command}' with error {output.stderr}"
     output = output.stdout
 

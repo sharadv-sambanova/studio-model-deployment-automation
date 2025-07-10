@@ -183,3 +183,15 @@ Meta-Llama-3.1-70B-Instruct:
 DeepSeek-R1-0528:
   app_name: Samba1 DeepSeek Experts
   model_parameter_count: 671b
+
+JRE-Llama-3.1-70B-EZO-JRC-Second-All-Unsupervised-Mod:
+  app_name: Samba1 Llama3.1 Experts
+  model_parameter_count: 70b
+
+JRE-Llama-3.1-70B-Swallow-NTT-Second-All-Supervised-Mod:
+  app_name: Samba1 Llama3.1 Experts
+  model_parameter_count: 70b
+
+JRE-Llama-3.1-70B-Swallow-AXCXEPT-Test-2-Mod:
+  app_name: Samba1 Llama3.1 Experts
+  model_parameter_count: 70b
