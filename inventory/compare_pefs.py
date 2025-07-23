@@ -51,9 +51,34 @@ def cache_metadata(fn):
 
 @cache_metadata
 def get_studio_pef_metadata(pef_path: str):
+    """Get the pef metadata for the Studio PEF. Input is the folder path containing the PEF."""
+    if pef_path.startswith('sw-generic-daas-artifacts-dev'):
+        return _get_jf_pef_metadata(pef_path)
+    elif pef_path.startswith('gs://'):
+        result = subprocess.run(['gsutil', 'ls', pef_path], capture_output=True, text=True)
+        if result.returncode != 0:
+            raise RuntimeError(f"Failed to list GCS path {pef_path}: {result.stderr}")
+        pef_line = None
+        for line in result.stdout.splitlines():
+            if line.endswith('.pef'):
+                pef_line = line
+                break
+        if pef_line is None:
+            raise FileNotFoundError(f"No .pef file found in {pef_path}")
+        return _get_gcs_pef_metadata(pef_line)
+
+
+@cache_metadata
+def get_cloud_pef_metadata(pef_path: str):
+    """Get the pef metadata for the Cloud PEF. Input is the actual path to the PEF."""
+    return _get_gcs_pef_metadata(pef_path)
+    
+
+def _get_jf_pef_metadata(pef_path: str):
     """
         Retrieve pef metadata from JFrog.
         Parses the data from the output of jf rt s <pef_path>. See below comment for an example of output
+        Input: folder path containing the PEF file
     """
     # [
     #   {
@@ -88,14 +113,12 @@ def get_studio_pef_metadata(pef_path: str):
     
     raise ValueError(f"No .pef file found in output {out_json}")
 
-
-@cache_metadata
-def get_cloud_pef_metadata(pef_path: str):
+def _get_gcs_pef_metadata(pef_path: str):
     """
         Retrieves PEF metadata (md5sum, upload date, path) from GCS.
         Parses data from the output of gsutil stat <filepath>. See comment for an example output
+        Input: actual path to the PEF
     """
-
     # <path>:
     #     Creation time:          Thu, 20 Feb 2025 18:27:17 GMT
     #     Update time:            Thu, 20 Feb 2025 18:27:17 GMT
@@ -109,7 +132,6 @@ def get_cloud_pef_metadata(pef_path: str):
     #     ETag:                   CKuVxbDw0osDEAE=
     #     Generation:             1740076036999851
     #     Metageneration:         1
-
     command = f"gsutil stat {pef_path}"
     output = subprocess.run(command.split(), capture_output=True, text=True)
     assert output.returncode == 0, f"Got bad returncode for '{command}' with error {output.stderr}"
@@ -129,7 +151,6 @@ def get_cloud_pef_metadata(pef_path: str):
         "upload_date": data["Creation time"], 
         "path": data["path"]
     }
-
 
 def date_difference(date1, date2):
     """Compute the difference in days between date1 and date2"""
