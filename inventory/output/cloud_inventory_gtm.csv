@@ -58,13 +58,7 @@ Meta-Llama-3.3-70B-Instruct,sn40-16,16,True,infer,65536,[1]
 Meta-Llama-3.3-70B-Instruct,sn40-16,16,True,infer,131072,[1]
 Meta-Llama-Guard-3-8B,sn40-16,16,False,infer,4096,"[1, 2, 4, 8]"
 Meta-Llama-Guard-3-8B,sn40-16,16,False,infer,8192,"[1, 2, 4, 8]"
-QwQ-32B,sn40-16,16,True,infer,4096,"[1, 2, 4]"
-QwQ-32B,sn40-16,16,True,infer,8192,"[1, 2, 4]"
-QwQ-32B,sn40-16,16,True,infer,16384,[1]
 Qwen2-Audio-7B-Instruct,sn40-16,16,False,infer,4096,[1]
-Qwen2.5-0.5B-SFT-Instruct,sn40-16,16,False,infer,4096,"[1, 2, 4]"
-Qwen2.5-0.5B-SFT-Instruct,sn40-16,16,False,infer,8192,"[1, 2, 4]"
-Qwen2.5-0.5B-SFT-Instruct,sn40-16,16,False,infer,16384,[1]
 Qwen3-32B,sn40-16,16,False,infer,8192,"[1, 4]"
 Qwen3-32B,sn40-16,16,False,infer,16384,[1]
 Qwen3-32B,sn40-16,16,False,infer,32768,"[1, 2]"
