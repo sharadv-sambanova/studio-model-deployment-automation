@@ -210,6 +210,10 @@ gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1
   md5: 368b4d936a30bf187023f0e2ae529416
   path: gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1653/Llama-4-Scout-17B-16E-Instruct.pef
   upload_date: Thu, 17 Apr 2025 21:45:42 GMT
+? gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1667/qwen3_32b_full_model_ss4096_8192_voc152064_inference_TP16_CoE_ckpt_sharing_BS1_SS4096_8192.pef
+: md5: 72de2a130df77f5535b24169201e5451
+  path: gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1667/qwen3_32b_full_model_ss4096_8192_voc152064_inference_TP16_CoE_ckpt_sharing_BS1_SS4096_8192.pef
+  upload_date: Tue, 29 Apr 2025 15:03:51 GMT
 gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1674/Llama-4-Maverick-17B-128E-Instruct.pef:
   md5: bb71e14e60582d438daef6979c106cf3
   path: gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1674/Llama-4-Maverick-17B-128E-Instruct.pef
@@ -218,6 +222,18 @@ gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1
 : md5: b5f29c67c37266e5f2db589956a19ad3
   path: gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1712/coe_pef_bs1_ss1024_2048_4096_8192/qwen3_32b_full_model_ss1024_2048_4096_8192_voc151936_inference_TP16_CoE_ckpt_sharing_BS1_SS1024_2048_4096_8192.pef
   upload_date: Thu, 05 Jun 2025 06:03:00 GMT
+? gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1727/coe_pef_bs2_ss512_1024_1536_2048_2560_4096/Llama3dot3_70B_DP2_TP8_batch_dim_split_ss4096_token_gen_seq_length6_PNR_FFN_section_spec_partition_incr_partition_CoE_ckpt_sharing_BS2_SS512_1024_1536_2048_2560_4096.pef
+: md5: 670532c94e11bb51c6c57101534df7a8
+  path: gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1727/coe_pef_bs2_ss512_1024_1536_2048_2560_4096/Llama3dot3_70B_DP2_TP8_batch_dim_split_ss4096_token_gen_seq_length6_PNR_FFN_section_spec_partition_incr_partition_CoE_ckpt_sharing_BS2_SS512_1024_1536_2048_2560_4096.pef
+  upload_date: Tue, 08 Jul 2025 21:48:18 GMT
+? gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1727/coe_pef_bs4_ss512_1024_1536_2048_2560_4096/Llama3dot3_70B_DP2_TP8_batch_dim_split_ss4096_token_gen_seq_length6_PNR_FFN_section_spec_partition_CoE_ckpt_sharing_BS4_SS512_1024_1536_2048_2560_4096.pef
+: md5: 26909d216dfe7f62aa343d82e5b4078f
+  path: gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1727/coe_pef_bs4_ss512_1024_1536_2048_2560_4096/Llama3dot3_70B_DP2_TP8_batch_dim_split_ss4096_token_gen_seq_length6_PNR_FFN_section_spec_partition_CoE_ckpt_sharing_BS4_SS512_1024_1536_2048_2560_4096.pef
+  upload_date: Tue, 08 Jul 2025 14:46:30 GMT
+? gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1727/coe_pef_bs8_ss512_1024_1536_2048_2560_4096/Llama3dot3_70B_DP2_TP8_batch_dim_split_ss4096_token_gen_seq_length6_PNR_FFN_section_spec_partition_CoE_ckpt_sharing_BS8_SS512_1024_1536_2048_2560_4096.pef
+: md5: 08575a2db546c247606deb3dee7cd3df
+  path: gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1727/coe_pef_bs8_ss512_1024_1536_2048_2560_4096/Llama3dot3_70B_DP2_TP8_batch_dim_split_ss4096_token_gen_seq_length6_PNR_FFN_section_spec_partition_CoE_ckpt_sharing_BS8_SS512_1024_1536_2048_2560_4096.pef
+  upload_date: Tue, 08 Jul 2025 14:46:33 GMT
 ? gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_283_llama3d1_8b_ss16k/coe_pef_bs1_ss16384_4096/Llama3_8B_TP16_ss16384_4096_voc128256_inference_0928_CoE_ckpt_sharing_BS1_SS16384_4096.pef
 : md5: ad1546fa7b49616f2ba6195b494a3d4b
   path: gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_283_llama3d1_8b_ss16k/coe_pef_bs1_ss16384_4096/Llama3_8B_TP16_ss16384_4096_voc128256_inference_0928_CoE_ckpt_sharing_BS1_SS16384_4096.pef
