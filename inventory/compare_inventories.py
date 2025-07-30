@@ -2,17 +2,19 @@ import csv
 import json
 from typing import Dict, Set, List, Tuple, Union
 
-from utils import STUDIO_INVENTORY_PATH, convert_seq_len, replace_af_prefix
+from utils import STUDIO_INVENTORY_PATH, convert_seq_len, replace_af_prefix, read_csv
 from schemas import InventoryKey
 from compare_pefs import compare_pefs
 from cloud_inventory import OUTPUT_FILE as CLOUD_INVENTORY_PATH
+from compare_models import compare_models
 
 CLOUD_ONLY_OUTPUT="output/cloud_only_inventory.csv"
 STUDIO_ONLY_OUTPUT="output/studio_only_inventory.csv"
 COMMON_OUTPUT="output/common_inventory.csv"
 ONBOARD_TO_STUDIO_OUTPUT="output/onboard_to_studio.csv"
+MODEL_COMPARISON_OUTPUT="output/model_comparison.csv"
 
-def get_inventories():
+def get_inventories() -> Tuple[Dict[InventoryKey, Dict], Dict[InventoryKey, Dict]]:
     """Parse the inventory files and return maps of key (tuple) -> row (dict)"""
 
     def studio_filter(row):
@@ -72,11 +74,23 @@ class InventoryComparer():
         "onboard_cloud_models",
         "is_new_config",
     ]
-
+    model_comparison_fields = [
+        'cloud_model_name',
+        'studio_model_name',
+        'cloud_path',
+        'studio_path',
+        'is_same',
+        'differing_files',
+        'cloud_only_files',
+        'studio_only_files'
+    ]
 
     def __init__(self):
         self.cloud_inventory, self.studio_inventory = get_inventories()
         self.common_keys, self.cloud_only_keys, self.studio_only_keys = self._compare_inventory_keys()
+        # raw rows from cloud and studio inventories
+        self.cloud_inventory_raw = read_csv(CLOUD_INVENTORY_PATH)
+        self.studio_inventory_raw = read_csv(STUDIO_INVENTORY_PATH)
 
 
     def _compare_inventory_keys(self) -> Tuple[Set, Set, Set]:
@@ -96,11 +110,13 @@ class InventoryComparer():
         InventoryComparer._write_file(self._common_rows(), InventoryComparer.common_fields, COMMON_OUTPUT)
         InventoryComparer._write_file(self._studio_only_rows(), InventoryComparer.studio_only_fields, STUDIO_ONLY_OUTPUT)
         InventoryComparer._write_file(self._onboard_to_studio_rows(), InventoryComparer.onboard_to_studio_fields, ONBOARD_TO_STUDIO_OUTPUT)
+        model_comparison_rows = compare_models(self.cloud_inventory_raw, self.studio_inventory_raw)
+        InventoryComparer._write_file(model_comparison_rows, self.model_comparison_fields, MODEL_COMPARISON_OUTPUT)
 
 
     @staticmethod
     def _write_file(rows, fields, filename):
-        rows = sorted(rows, key=lambda x: x["id"])
+        rows = sorted(rows, key=lambda x: x["id"] if "id" in x else x["cloud_model_name"])
         with open(filename, "w") as f:
             writer = csv.DictWriter(f, fieldnames=fields, quoting=csv.QUOTE_MINIMAL)
             writer.writeheader()
@@ -210,6 +226,10 @@ class InventoryComparer():
             rows.append(_build_row(cloud_only_row, True))
         
         return rows
+
+    
+    def _model_rows(self) -> List[Dict]:
+        """"""
 
 
 if __name__ == "__main__":
