@@ -150,7 +150,11 @@ class InventoryKey:
                 if field.type == bool:
                     val = to_bool(InventoryKey.lookup_field(field.name, obj))
                 else:
-                    val = field.type(InventoryKey.lookup_field(field.name, obj))
+                    try:
+                        val = InventoryKey.lookup_field(field.name, obj)
+                        val = field.type(val)
+                    except ValueError as e:
+                        print(f"Could not convert field {field.name} with value {val} to type {field.type}")
                 init_kwargs[field.name] = val
         except KeyError:
             raise InvalidDictForInventoryKey(

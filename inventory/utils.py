@@ -1,7 +1,8 @@
 import re
 import yaml
 from pathlib import Path
-from typing import Union, Dict
+from typing import Union, Dict, List
+import csv
 
 DAAS_RELEASE_ROOT = Path(__file__).parent.parent.parent / "daas-release"
 FAST_COE_ROOT = Path(__file__).parent.parent.parent / "fast-coe"
@@ -20,7 +21,7 @@ STUDIO_INVENTORY_PATH= DAAS_RELEASE_ROOT / "inventory/inventory_output/prod/mode
 CLOUD_MODELS_YAML = FAST_COE_ROOT / "helm/values.yaml"
 CLOUD_PROD_DEPLOYMENTS = FAST_COE_ROOT / "helm/inference-deployments/prod"
 
-MODEL_MAPPINGS_FILE = Path(__file__).parent / "model_mappings.yaml"
+MODEL_MAPPINGS_FILE = Path(__file__).parent / "model_arch_mappings.yaml"
 with open(MODEL_MAPPINGS_FILE) as f:
     MODEL_MAPPINGS=yaml.safe_load(f)
 with open(CLOUD_MODELS_YAML) as f:
@@ -147,3 +148,10 @@ def replace_af_prefix(inp: str) -> str:
     """Replace prefix variables from artifactory paths with their corresponding dev repo"""
     inp = inp.replace("{{ARTIFACTS_REPO}}", "sw-generic-daas-artifacts-dev")
     return inp
+
+def read_csv(csv_file) -> List[Dict]:
+    """Return all the rows from a csv"""
+    with open(csv_file) as f:
+        reader = csv.DictReader(f)
+        rows = [r for r in reader]
+    return rows
