@@ -222,10 +222,18 @@ gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1
 : md5: b5f29c67c37266e5f2db589956a19ad3
   path: gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1712/coe_pef_bs1_ss1024_2048_4096_8192/qwen3_32b_full_model_ss1024_2048_4096_8192_voc151936_inference_TP16_CoE_ckpt_sharing_BS1_SS1024_2048_4096_8192.pef
   upload_date: Thu, 05 Jun 2025 06:03:00 GMT
+? gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1727/coe_pef_bs16_ss512_1024_1536_2048_2560_4096/Llama3dot3_70B_DP2_TP8_batch_dim_split_ss4096_token_gen_seq_length6_PNR_FFN_section_spec_partition_CoE_ckpt_sharing_BS16_SS512_1024_1536_2048_2560_4096.pef
+: md5: fd30c8398b1b6ed44a7e0ed8c2afaad5
+  path: gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1727/coe_pef_bs16_ss512_1024_1536_2048_2560_4096/Llama3dot3_70B_DP2_TP8_batch_dim_split_ss4096_token_gen_seq_length6_PNR_FFN_section_spec_partition_CoE_ckpt_sharing_BS16_SS512_1024_1536_2048_2560_4096.pef
+  upload_date: Tue, 08 Jul 2025 14:46:33 GMT
 ? gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1727/coe_pef_bs2_ss512_1024_1536_2048_2560_4096/Llama3dot3_70B_DP2_TP8_batch_dim_split_ss4096_token_gen_seq_length6_PNR_FFN_section_spec_partition_incr_partition_CoE_ckpt_sharing_BS2_SS512_1024_1536_2048_2560_4096.pef
 : md5: 670532c94e11bb51c6c57101534df7a8
   path: gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1727/coe_pef_bs2_ss512_1024_1536_2048_2560_4096/Llama3dot3_70B_DP2_TP8_batch_dim_split_ss4096_token_gen_seq_length6_PNR_FFN_section_spec_partition_incr_partition_CoE_ckpt_sharing_BS2_SS512_1024_1536_2048_2560_4096.pef
   upload_date: Tue, 08 Jul 2025 21:48:18 GMT
+? gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1727/coe_pef_bs32_ss512_1024_1536_2048_2560_4096/Llama3dot3_70B_DP2_TP8_batch_dim_split_ss4096_token_gen_seq_length6_PNR_FFN_section_spec_partition_CoE_ckpt_sharing_BS32_SS512_1024_1536_2048_2560_4096.pef
+: md5: 4be696edf980ef4554e1820a28f57ddb
+  path: gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1727/coe_pef_bs32_ss512_1024_1536_2048_2560_4096/Llama3dot3_70B_DP2_TP8_batch_dim_split_ss4096_token_gen_seq_length6_PNR_FFN_section_spec_partition_CoE_ckpt_sharing_BS32_SS512_1024_1536_2048_2560_4096.pef
+  upload_date: Tue, 08 Jul 2025 14:46:29 GMT
 ? gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1727/coe_pef_bs4_ss512_1024_1536_2048_2560_4096/Llama3dot3_70B_DP2_TP8_batch_dim_split_ss4096_token_gen_seq_length6_PNR_FFN_section_spec_partition_CoE_ckpt_sharing_BS4_SS512_1024_1536_2048_2560_4096.pef
 : md5: 26909d216dfe7f62aa343d82e5b4078f
   path: gs://acp-coe-models-checkpoints-prod-0/version/0.1.0/pefs-checkpoints/pefs/PEF_1727/coe_pef_bs4_ss512_1024_1536_2048_2560_4096/Llama3dot3_70B_DP2_TP8_batch_dim_split_ss4096_token_gen_seq_length6_PNR_FFN_section_spec_partition_CoE_ckpt_sharing_BS4_SS512_1024_1536_2048_2560_4096.pef

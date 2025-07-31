@@ -5,8 +5,6 @@ Samba1_DeepSeek_Experts-deepseek-32k-False-32768,Samba1_DeepSeek_Experts-deepsee
 Samba1_DeepSeek_Experts-deepseek-4k-False-4096,Samba1_DeepSeek_Experts-deepseek-4k-False,Samba1 DeepSeek Experts,deepseek-4k,4096,False,[4]
 Samba1_DeepSeek_Experts-deepseek-8k-False-8192,Samba1_DeepSeek_Experts-deepseek-8k-False,Samba1 DeepSeek Experts,deepseek-8k,8192,False,[1]
 Samba1_Embedding_Experts-7b-False-8192,Samba1_Embedding_Experts-7b-False,Samba1 Embedding Experts,7b,8192,False,"[1, 4, 8, 16, 32]"
-Samba1_Llama3d1_Experts-405b-True-16384,Samba1_Llama3d1_Experts-405b-True,Samba1 Llama3.1 Experts,405b,16384,True,[1]
-Samba1_Llama3d1_Experts-405b-True-8192,Samba1_Llama3d1_Experts-405b-True,Samba1 Llama3.1 Experts,405b,8192,True,[1]
 Samba1_Llama3d1_Experts-70b-False-131072,Samba1_Llama3d1_Experts-70b-False,Samba1 Llama3.1 Experts,70b,131072,False,"[1, 2]"
 Samba1_Llama3d1_Experts-70b-False-32768,Samba1_Llama3d1_Experts-70b-False,Samba1 Llama3.1 Experts,70b,32768,False,[1]
 Samba1_Llama3d1_Experts-70b-False-4096,Samba1_Llama3d1_Experts-70b-False,Samba1 Llama3.1 Experts,70b,4096,False,"[1, 4, 8, 16]"
@@ -17,7 +15,6 @@ Samba1_Llama3d1_Experts-70b-True-16384,Samba1_Llama3d1_Experts-70b-True,Samba1 L
 Samba1_Llama3d1_Experts-70b-True-32768,Samba1_Llama3d1_Experts-70b-True,Samba1 Llama3.1 Experts,70b,32768,True,"[1, 4]"
 Samba1_Llama3d1_Experts-70b-True-65536,Samba1_Llama3d1_Experts-70b-True,Samba1 Llama3.1 Experts,70b,65536,True,[1]
 Samba1_Llama3d2_Experts-3b-surgery-False-16384,Samba1_Llama3d2_Experts-3b-surgery-False,Samba1 Llama3.2 Experts,3b-surgery,16384,False,"[1, 2, 4]"
-Samba1_Llama3d2_Experts-3b-surgery-False-8192,Samba1_Llama3d2_Experts-3b-surgery-False,Samba1 Llama3.2 Experts,3b-surgery,8192,False,"[1, 2, 4, 8, 16, 32]"
 Samba1_Llama3d3_Experts-70b-False-131072,Samba1_Llama3d3_Experts-70b-False,Samba1 Llama3.3 Experts,70b,131072,False,"[1, 2]"
 Samba1_Llama3d3_Experts-70b-False-32768,Samba1_Llama3d3_Experts-70b-False,Samba1 Llama3.3 Experts,70b,32768,False,[1]
 Samba1_Llama3d3_Experts-70b-False-4096,Samba1_Llama3d3_Experts-70b-False,Samba1 Llama3.3 Experts,70b,4096,False,"[1, 4, 8, 16]"
