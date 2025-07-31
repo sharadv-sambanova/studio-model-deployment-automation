@@ -116,6 +116,7 @@ class InventoryComparer():
 
     @staticmethod
     def _write_file(rows, fields, filename):
+        # model comparison rows don't have 'id' column, all others do
         rows = sorted(rows, key=lambda x: x["id"] if "id" in x else x["cloud_model_name"])
         with open(filename, "w") as f:
             writer = csv.DictWriter(f, fieldnames=fields, quoting=csv.QUOTE_MINIMAL)
@@ -226,10 +227,6 @@ class InventoryComparer():
             rows.append(_build_row(cloud_only_row, True))
         
         return rows
-
-    
-    def _model_rows(self) -> List[Dict]:
-        """"""
 
 
 if __name__ == "__main__":
